@@ -15,7 +15,7 @@ const HeroSection = () => {
       {/* Hero Content */}
       <div className="relative z-10 text-center max-w-4xl mx-auto px-6 animate-fade-in-up">
         <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-2xl [text-shadow:_2px_2px_4px_rgb(0_0_0_/_80%)]">
-          You're Not Alone.{" "}
+          You&apos;re Not Alone.{" "}
           <span className="bg-gradient-teal-mint bg-clip-text text-transparent drop-shadow-none [text-shadow:none]">
             Talk, Heal, Grow.
           </span>
