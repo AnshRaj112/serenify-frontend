@@ -1,5 +1,4 @@
 import { Button } from "./ui/button";
-import heroImage from "@/assets/hero-landscape.jpg";
 
 const HeroSection = () => {
   return (
@@ -7,7 +6,7 @@ const HeroSection = () => {
       {/* Hero Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${heroImage})` }}
+        style={{ backgroundImage: `url('/hero-landscape.jpg')` }}
       >
         {/* Subtle overlay for text readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-muted/20"></div>
@@ -28,10 +27,10 @@ const HeroSection = () => {
         
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-          <Button className="w-full sm:w-auto">
+          <Button variant="hero" className="w-full sm:w-auto">
             Get Started
           </Button>
-          <Button className="w-full sm:w-auto">
+          <Button variant="hero-outline" className="w-full sm:w-auto">
             Join as a Therapist
           </Button>
         </div>

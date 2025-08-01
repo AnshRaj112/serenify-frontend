@@ -1,42 +1,121 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@media (prefers-color-scheme: dark) {
+/* Mental Wellness Platform Design System - Realistic, Emotionally Soothing
+All colors MUST be HSL.
+*/
+
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Core wellness palette - All HSL format */
+    --background: 0 0% 98%;
+    --foreground: 210 25% 15%;
+
+    /* Card system for content sections */
+    --card: 0 0% 100%;
+    --card-foreground: 210 25% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 25% 15%;
+
+    /* Primary: Teal (#4EA199) - healing, calm */
+    --primary: 175 34% 56%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 175 45% 65%;
+
+    /* Secondary: Lilac (#B497D6) - support, comfort */
+    --secondary: 270 35% 70%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* Deep Charcoal Blue (#1E2A38) - grounding, depth */
+    --muted: 210 35% 17%;
+    --muted-foreground: 0 0% 100%;
+
+    /* Earth tones for nature elements */
+    --accent: 145 25% 65%;
+    --accent-foreground: 210 25% 15%;
+
+    /* Nature-inspired neutrals */
+    --earth-green: 145 30% 55%;
+    --dawn-gold: 45 85% 75%;
+    --soft-brown: 30 25% 60%;
+
+    /* Emotional support colors */
+    --healing: 175 40% 60%;
+    --comfort: 270 30% 75%;
+    --hope: 45 80% 70%;
+
+    /* System colors */
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 20% 88%;
+    --input: 210 20% 92%;
+    --ring: 175 34% 56%;
+
+    --radius: 1rem;
+
+    /* Gradients for emotional depth */
+    --gradient-hero: linear-gradient(135deg, hsl(175 45% 65%), hsl(45 80% 80%));
+    --gradient-teal-mint: linear-gradient(120deg, hsl(175 34% 56%), hsl(175 45% 75%));
+    --gradient-lavender: linear-gradient(120deg, hsl(270 35% 70%), hsl(270 25% 85%));
+    --gradient-nature: linear-gradient(180deg, hsl(175 25% 85%), hsl(145 20% 90%));
+
+    /* Shadows for realistic depth */
+    --shadow-soft: 0 4px 20px -4px hsl(210 35% 17% / 0.15);
+    --shadow-card: 0 8px 30px -8px hsl(210 35% 17% / 0.2);
+    --shadow-hero: 0 20px 60px -20px hsl(175 34% 56% / 0.3);
+
+    /* Animation variables */
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .dark {
+    --background: 210 35% 17%;
+    --foreground: 0 0% 95%;
+
+    --card: 210 30% 20%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 210 30% 20%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 175 45% 65%;
+    --primary-foreground: 210 35% 17%;
+
+    --secondary: 270 35% 70%;
+    --secondary-foreground: 210 35% 17%;
+
+    --muted: 210 35% 17%;
+    --muted-foreground: 0 0% 80%;
+
+    --accent: 145 25% 65%;
+    --accent-foreground: 210 35% 17%;
+
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 0 0% 95%;
+
+    --border: 210 25% 25%;
+    --input: 210 25% 25%;
+    --ring: 175 45% 65%;
   }
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+/* Custom utility classes */
+@layer utilities {
+  .border-border {
+    border-color: hsl(var(--border));
   }
 }
