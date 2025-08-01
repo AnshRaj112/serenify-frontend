@@ -8,7 +8,6 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
           DEFAULT: 'hsl(var(--card))',
@@ -47,16 +46,27 @@ module.exports = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      fontFamily: {
+        'display': ['Inter', 'system-ui', 'sans-serif'],
+        'sans': ['Inter', 'system-ui', 'sans-serif'],
+        'heading': ['Inter', 'system-ui', 'sans-serif'],
+      },
       backgroundImage: {
-        'gradient-hero': 'var(--gradient-hero)',
-        'gradient-teal-mint': 'var(--gradient-teal-mint)',
-        'gradient-lavender': 'var(--gradient-lavender)',
-        'gradient-nature': 'var(--gradient-nature)',
+        'gradient-primary': 'var(--gradient-primary)',
+        'gradient-secondary': 'var(--gradient-secondary)',
+        'section-hero': 'var(--bg-hero)',
+        'section-about': 'var(--bg-about)',
+        'section-therapists': 'var(--bg-therapists)',
+        'section-features': 'var(--bg-features)',
+        'section-cta': 'var(--bg-cta)',
+        'section-contact': 'var(--bg-contact)',
+        'section-faq': 'var(--bg-faq)',
+        'section-footer': 'var(--bg-footer)',
       },
       boxShadow: {
         'soft': 'var(--shadow-soft)',
         'card': 'var(--shadow-card)',
-        'hero': 'var(--shadow-hero)',
+        'floating': 'var(--shadow-floating)',
       },
       animation: {
         'fade-in-up': 'fadeInUp 0.6s ease-out',

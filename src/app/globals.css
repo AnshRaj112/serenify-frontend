@@ -1,105 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Mental Wellness Platform Design System - Realistic, Emotionally Soothing
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    /* Core wellness palette - All HSL format */
-    --background: 0 0% 98%;
-    --foreground: 210 25% 15%;
+    /* Mental Health Platform Color System - Core Colors Only */
+    --background: 210 29% 16%; /* Deep Charcoal Blue - for fallback */
+    --foreground: 180 25% 85%; /* Soft white for text */
 
-    /* Card system for content sections */
-    --card: 0 0% 100%;
-    --card-foreground: 210 25% 15%;
+    --card: 210 25% 20%; /* Slightly lighter charcoal for cards */
+    --card-foreground: 180 25% 90%; /* Light text on cards */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 25% 15%;
+    --popover: 210 25% 18%;
+    --popover-foreground: 180 25% 90%;
 
-    /* Primary: Teal (#4EA199) - healing, calm */
-    --primary: 175 34% 56%;
-    --primary-foreground: 0 0% 100%;
-    --primary-glow: 175 45% 65%;
+    --primary: 175 34% 55%; /* Teal #4EA199 */
+    --primary-foreground: 210 40% 98%; /* White text on teal */
 
-    /* Secondary: Lilac (#B497D6) - support, comfort */
-    --secondary: 270 35% 70%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 275 45% 70%; /* Warm Lilac #B497D6 */
+    --secondary-foreground: 210 40% 98%;
 
-    /* Deep Charcoal Blue (#1E2A38) - grounding, depth */
-    --muted: 210 35% 17%;
-    --muted-foreground: 0 0% 100%;
+    --muted: 210 20% 25%; /* Muted dark for subtle backgrounds */
+    --muted-foreground: 180 15% 65%; /* Muted text */
 
-    /* Earth tones for nature elements */
-    --accent: 145 25% 65%;
-    --accent-foreground: 210 25% 15%;
+    --accent: 275 45% 70%; /* Same as secondary for consistency */
+    --accent-foreground: 210 40% 98%;
 
-    /* Nature-inspired neutrals */
-    --earth-green: 145 30% 55%;
-    --dawn-gold: 45 85% 75%;
-    --soft-brown: 30 25% 60%;
+    --destructive: 0 70% 60%; /* Soft red for errors */
+    --destructive-foreground: 210 40% 98%;
 
-    /* Emotional support colors */
-    --healing: 175 40% 60%;
-    --comfort: 270 30% 75%;
-    --hope: 45 80% 70%;
+    --border: 210 20% 30%; /* Subtle borders */
+    --input: 210 20% 22%; /* Input backgrounds */
+    --ring: 175 34% 55%; /* Focus rings in teal */
 
-    /* System colors */
-    --destructive: 0 65% 55%;
-    --destructive-foreground: 0 0% 100%;
+    /* Custom soothing gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(175 34% 55%), hsl(165 40% 65%)); /* Teal to Mint */
+    --gradient-secondary: linear-gradient(135deg, hsl(275 45% 70%), hsl(290 35% 75%)); /* Lilac to Lavender */
+    
+    /* Section-specific background gradients */
+    --bg-hero: linear-gradient(180deg, hsl(210 29% 16%), hsl(210 25% 18%));
+    --bg-about: linear-gradient(180deg, hsl(210 25% 18%), hsl(210 20% 22%));
+    --bg-therapists: linear-gradient(180deg, hsl(210 20% 22%), hsl(210 15% 25%));
+    --bg-features: linear-gradient(180deg, hsl(210 15% 25%), hsl(210 10% 28%));
+    --bg-cta: linear-gradient(135deg, hsl(175 34% 55%), hsl(165 40% 65%));
+    --bg-contact: linear-gradient(180deg, hsl(210 10% 28%), hsl(210 5% 30%));
+    --bg-faq: linear-gradient(180deg, hsl(210 5% 30%), hsl(210 0% 32%));
+    --bg-footer: linear-gradient(180deg, hsl(210 0% 32%), hsl(210 0% 35%));
+    
+    /* Shadows for depth and comfort */
+    --shadow-soft: 0 4px 20px -4px hsl(210 50% 8% / 0.3);
+    --shadow-card: 0 8px 32px -8px hsl(210 50% 8% / 0.4);
+    --shadow-floating: 0 12px 40px -12px hsl(175 34% 55% / 0.2);
+    
+    /* Animation timings for smooth interactions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-gentle: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
-    --border: 210 20% 88%;
-    --input: 210 20% 92%;
-    --ring: 175 34% 56%;
+    --radius: 0.5rem;
 
-    --radius: 1rem;
-
-    /* Gradients for emotional depth */
-    --gradient-hero: linear-gradient(135deg, hsl(175 45% 65%), hsl(45 80% 80%));
-    --gradient-teal-mint: linear-gradient(120deg, hsl(175 34% 56%), hsl(175 45% 75%));
-    --gradient-lavender: linear-gradient(120deg, hsl(270 35% 70%), hsl(270 25% 85%));
-    --gradient-nature: linear-gradient(180deg, hsl(175 25% 85%), hsl(145 20% 90%));
-
-    /* Shadows for realistic depth */
-    --shadow-soft: 0 4px 20px -4px hsl(210 35% 17% / 0.15);
-    --shadow-card: 0 8px 30px -8px hsl(210 35% 17% / 0.2);
-    --shadow-hero: 0 20px 60px -20px hsl(175 34% 56% / 0.3);
-
-    /* Animation variables */
-    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    --background: 210 35% 17%;
-    --foreground: 0 0% 95%;
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
 
-    --card: 210 30% 20%;
-    --card-foreground: 0 0% 95%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 210 30% 20%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 175 45% 65%;
-    --primary-foreground: 210 35% 17%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
 
-    --secondary: 270 35% 70%;
-    --secondary-foreground: 210 35% 17%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 210 35% 17%;
-    --muted-foreground: 0 0% 80%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 145 25% 65%;
-    --accent-foreground: 210 35% 17%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 65% 55%;
-    --destructive-foreground: 0 0% 95%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 210 25% 25%;
-    --input: 210 25% 25%;
-    --ring: 175 45% 65%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
@@ -113,9 +123,84 @@ All colors MUST be HSL.
   }
 }
 
-/* Custom utility classes */
 @layer utilities {
-  .border-border {
-    border-color: hsl(var(--border));
+  /* Background utilities */
+  .bg-background {
+    background: var(--background);
+  }
+  
+  /* Gradient backgrounds */
+  .bg-gradient-primary {
+    background: var(--gradient-primary);
+  }
+  
+  .bg-gradient-secondary {
+    background: var(--gradient-secondary);
+  }
+  
+  /* Section-specific backgrounds */
+  .bg-section-hero {
+    background: var(--bg-hero);
+  }
+  
+  .bg-section-about {
+    background: var(--bg-about);
+  }
+  
+  .bg-section-therapists {
+    background: var(--bg-therapists);
+  }
+  
+  .bg-section-features {
+    background: var(--bg-features);
+  }
+  
+  .bg-section-cta {
+    background: var(--bg-cta);
+  }
+  
+  .bg-section-contact {
+    background: var(--bg-contact);
+  }
+  
+  .bg-section-faq {
+    background: var(--bg-faq);
+  }
+  
+  .bg-section-footer {
+    background: var(--bg-footer);
+  }
+  
+  /* Gradient text */
+  .text-gradient-primary {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .text-gradient-secondary {
+    background: var(--gradient-secondary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Shadows */
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  
+  .shadow-floating {
+    box-shadow: var(--shadow-floating);
+  }
+  
+  /* Typography */
+  .font-heading {
+    font-family: 'Inter', system-ui, sans-serif;
   }
 }

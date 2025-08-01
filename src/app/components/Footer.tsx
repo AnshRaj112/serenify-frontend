@@ -1,147 +1,157 @@
-import { Heart, Mail, Phone, MapPin } from "lucide-react";
+"use client";
 
-const Footer = () => {
+import Link from "next/link";
+import { Heart, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+
+export function Footer() {
   const footerLinks = {
-    platform: [
-      { name: "Find a Therapist", href: "#" },
-      { name: "How It Works", href: "#" },
-      { name: "Pricing", href: "#" },
-      { name: "Crisis Support", href: "#" }
+    "Mental Health": [
+      { label: "Find a Therapist", href: "/search" },
+      { label: "Mental Health Resources", href: "/resources" },
+      { label: "Crisis Support", href: "/crisis" },
+      { label: "How It Works", href: "/how-it-works" },
     ],
-    therapists: [
-      { name: "Join as Therapist", href: "#" },
-      { name: "Therapist Resources", href: "#" },
-      { name: "Professional Development", href: "#" },
-      { name: "Success Stories", href: "#" }
+    "For Therapists": [
+      { label: "Join Our Network", href: "/therapist-signup" },
+      { label: "Therapist Dashboard", href: "/therapist-dashboard" },
+      { label: "Resources", href: "/therapist-resources" },
+      { label: "Pricing", href: "/therapist-pricing" },
     ],
-    support: [
-      { name: "Help Center", href: "#" },
-      { name: "Contact Us", href: "#" },
-      { name: "Privacy Policy", href: "#" },
-      { name: "Terms of Service", href: "#" }
-    ]
+    "Support": [
+      { label: "Help Center", href: "/help" },
+      { label: "Contact Us", href: "/contact" },
+      { label: "FAQ", href: "/faq" },
+      { label: "Safety Guidelines", href: "/safety" },
+    ],
+    "Legal": [
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms of Service", href: "/terms" },
+      { label: "Refund Policy", href: "/refund" },
+      { label: "Accessibility", href: "/accessibility" },
+    ],
   };
 
+  const socialLinks = [
+    { icon: Facebook, href: "#", label: "Facebook" },
+    { icon: Twitter, href: "#", label: "Twitter" },
+    { icon: Instagram, href: "#", label: "Instagram" },
+    { icon: Linkedin, href: "#", label: "LinkedIn" },
+  ];
+
   return (
-    <footer className="bg-muted text-white">
-      <div className="max-w-7xl mx-auto px-6 py-16">
+    <footer className="bg-section-footer backdrop-blur-sm border-t border-border">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Main Footer Content */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-8">
           {/* Brand Section */}
-          <div className="lg:col-span-1">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 bg-gradient-teal-mint rounded-xl flex items-center justify-center">
-                <Heart className="w-6 h-6 text-white" />
+          <div className="lg:col-span-2">
+            <div className="flex items-center space-x-2 mb-4">
+              <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+                <Heart className="w-5 h-5 text-primary-foreground" />
               </div>
-              <span className="text-2xl font-bold">HealingSpace</span>
+              <span className="font-display font-semibold text-xl text-foreground">
+                Serenify
+              </span>
             </div>
-            <p className="text-white/70 leading-relaxed mb-6">
-              Creating safe spaces for healing, growth, and genuine human connection. 
-              Your mental wellness journey matters to us.
-            </p>
-            <div className="space-y-3 text-sm">
-              <div className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-primary-glow" />
-                <span className="text-white/70">support@healingspace.com</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-primary-glow" />
-                <span className="text-white/70">1-800-HEALING</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <MapPin className="w-4 h-4 text-primary-glow" />
-                <span className="text-white/70">Available Worldwide</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Platform Links */}
-          <div>
-            <h4 className="text-lg font-semibold mb-6">Platform</h4>
-            <ul className="space-y-3">
-              {footerLinks.platform.map((link, index) => (
-                <li key={index}>
-                  <a 
-                    href={link.href}
-                    className="text-white/70 hover:text-primary-glow transition-colors duration-300"
-                  >
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* For Therapists */}
-          <div>
-            <h4 className="text-lg font-semibold mb-6">For Therapists</h4>
-            <ul className="space-y-3">
-              {footerLinks.therapists.map((link, index) => (
-                <li key={index}>
-                  <a 
-                    href={link.href}
-                    className="text-white/70 hover:text-secondary transition-colors duration-300"
-                  >
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Support */}
-          <div>
-            <h4 className="text-lg font-semibold mb-6">Support</h4>
-            <ul className="space-y-3">
-              {footerLinks.support.map((link, index) => (
-                <li key={index}>
-                  <a 
-                    href={link.href}
-                    className="text-white/70 hover:text-hope transition-colors duration-300"
-                  >
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
             
-            {/* Crisis Support Highlight */}
-            <div className="mt-8 p-4 bg-destructive/20 border border-destructive/30 rounded-xl">
-              <h5 className="text-destructive font-semibold mb-2">Crisis Support</h5>
-              <p className="text-white/70 text-sm">
-                If you're in crisis, please call 988 or your local emergency services immediately.
+            <p className="text-muted-foreground mb-6 max-w-md">
+              Connecting you with licensed mental health professionals in a safe, 
+              private, and supportive environment. Your mental health matters.
+            </p>
+
+            {/* Contact Info */}
+            <div className="space-y-2 text-sm">
+              <div className="flex items-center space-x-2 text-muted-foreground">
+                <Phone className="w-4 h-4" />
+                <span>1-800-SERENIFY</span>
+              </div>
+              <div className="flex items-center space-x-2 text-muted-foreground">
+                <Mail className="w-4 h-4" />
+                <span>support@serenify.com</span>
+              </div>
+              <div className="flex items-center space-x-2 text-muted-foreground">
+                <MapPin className="w-4 h-4" />
+                <span>Available Nationwide</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer Links */}
+          {Object.entries(footerLinks).map(([category, links]) => (
+            <div key={category}>
+              <h3 className="font-display font-semibold text-foreground mb-4">
+                {category}
+              </h3>
+              <ul className="space-y-2">
+                {links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        {/* Crisis Support Banner */}
+        <div className="bg-gradient-primary/10 border border-primary/20 rounded-lg p-4 mb-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between">
+            <div className="text-center sm:text-left mb-4 sm:mb-0">
+              <h4 className="font-semibold text-foreground mb-1">
+                Crisis Support Available 24/7
+              </h4>
+              <p className="text-sm text-muted-foreground">
+                If you're in crisis, help is available immediately
               </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <a
+                href="tel:988"
+                className="inline-flex items-center justify-center px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+              >
+                Call 988
+              </a>
+              <a
+                href="tel:911"
+                className="inline-flex items-center justify-center px-4 py-2 border border-primary text-primary rounded-lg text-sm font-medium hover:bg-primary/10 transition-colors"
+              >
+                Emergency: 911
+              </a>
             </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-white/20 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-white/70 text-sm">
-              © 2024 HealingSpace. All rights reserved. • HIPAA Compliant • Licensed & Verified Therapists
+        {/* Bottom Section */}
+        <div className="border-t border-border pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="text-sm text-muted-foreground mb-4 md:mb-0">
+              <p>© {new Date().getFullYear()} Serenify. All rights reserved.</p>
+              <p className="mt-1">
+                Licensed mental health professionals. HIPAA compliant platform.
+              </p>
             </div>
-            
-            {/* Trust Badges */}
-            <div className="flex items-center gap-6 text-xs text-white/70">
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-primary-glow rounded-full"></div>
-                <span>SSL Secured</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-secondary rounded-full"></div>
-                <span>HIPAA Compliant</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-hope rounded-full"></div>
-                <span>Licensed Professionals</span>
-              </div>
+
+            {/* Social Links */}
+            <div className="flex items-center space-x-4">
+              {socialLinks.map(({ icon: Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  className="w-10 h-10 bg-muted hover:bg-primary/10 rounded-lg flex items-center justify-center text-muted-foreground hover:text-primary transition-all hover:scale-105"
+                  aria-label={label}
+                >
+                  <Icon className="w-5 h-5" />
+                </a>
+              ))}
             </div>
           </div>
         </div>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}
