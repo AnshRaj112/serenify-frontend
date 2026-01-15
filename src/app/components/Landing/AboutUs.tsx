@@ -5,7 +5,7 @@ import {
     BookOpen, 
   } from "lucide-react";
   import { Card, CardContent} from "../ui/card";
-  import styles from "./AboutUs.module.scss";
+  import styles from "./scss/AboutUs.module.scss";
 
   export default function AboutUs() {
     const features = [

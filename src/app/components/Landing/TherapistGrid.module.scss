@@ -1,0 +1,62 @@
+.therapistGrid {
+  padding: 5rem 1.5rem;
+  background: #1d2935;
+}
+
+.container {
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+
+  @media (min-width: 768px) {
+    font-size: 3rem;
+  }
+}
+
+.titleHighlight {
+  background: var(--gradient-secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-left: 0.75rem;
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: hsl(var(--muted-foreground));
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  gap: 2rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.footer {
+  text-align: center;
+  margin-top: 3rem;
+}
+
