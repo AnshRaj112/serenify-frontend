@@ -1,0 +1,118 @@
+.aboutUs {
+  padding: 5rem 0;
+  background: #283848;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+
+  @media (min-width: 640px) {
+    padding: 0 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 0 2rem;
+  }
+}
+
+.header {
+  text-align: center;
+  max-width: 48rem;
+  margin: 0 auto 4rem;
+}
+
+.title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  margin-bottom: 1.5rem;
+
+  @media (min-width: 640px) {
+    font-size: 2.25rem;
+  }
+}
+
+.titleHighlight {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.description {
+  font-size: 1.125rem;
+  color: hsl(var(--muted-foreground));
+  line-height: 1.75;
+}
+
+.featuresGrid {
+  display: grid;
+  gap: 1.5rem;
+  justify-items: center;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.featureCard {
+  background: hsl(var(--card) / 0.5);
+  backdrop-filter: blur(4px);
+  border: 1px solid hsl(var(--border));
+  transition: all 0.3s ease;
+  border-radius: var(--radius);
+  min-width: 300px;
+  width: 100%;
+  max-width: 100%;
+
+  &:hover {
+    box-shadow: var(--shadow-floating);
+  }
+}
+
+.featureCardContent {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.iconWrapper {
+  width: 4rem;
+  height: 4rem;
+  background: var(--gradient-primary);
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  transition: transform 0.3s ease;
+
+  .featureCard:hover & {
+    transform: scale(1.1);
+  }
+}
+
+.icon {
+  width: 2rem;
+  height: 2rem;
+  color: hsl(var(--primary-foreground));
+}
+
+.featureTitle {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.5rem;
+}
+
+.featureDescription {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.875rem;
+}
+
