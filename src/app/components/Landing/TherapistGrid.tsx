@@ -2,7 +2,7 @@ import { Button } from "../ui/therapistbutton";
 import { CardTherapist, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/CardTherapist";
 import { Badge } from "../ui/badge";
 import { Star, MessageCircle, Video, Calendar } from "lucide-react";
-import styles from "./TherapistGrid.module.scss";
+import styles from "./scss/TherapistGrid.module.scss";
 
 const therapists = [
   {

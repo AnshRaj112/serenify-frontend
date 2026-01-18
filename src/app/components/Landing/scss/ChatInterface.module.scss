@@ -1,0 +1,255 @@
+.chatInterface {
+  padding: 5rem 1.5rem;
+  background: #1d2935;
+}
+
+.container {
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+
+  @media (min-width: 768px) {
+    font-size: 3rem;
+  }
+}
+
+.titleHighlight {
+  background: var(--gradient-secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-left: 0.75rem;
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: hsl(var(--muted-foreground));
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.chatCard {
+  box-shadow: var(--shadow-floating);
+  border: 1px solid hsl(var(--primary) / 0.2);
+  overflow: hidden;
+}
+
+.chatHeader {
+  background: hsl(var(--primary) / 0.1);
+  border-bottom: 1px solid hsl(var(--primary) / 0.2);
+  padding: 1.5rem;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatarContainer {
+  position: relative;
+}
+
+.avatar {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  object-fit: cover;
+  box-shadow: var(--shadow-soft);
+}
+
+.statusIndicator {
+  position: absolute;
+  bottom: -0.25rem;
+  right: -0.25rem;
+  width: 1rem;
+  height: 1rem;
+  background: hsl(var(--primary));
+  border-radius: 9999px;
+  border: 2px solid hsl(var(--card));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::after {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    background: white;
+    border-radius: 9999px;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.headerInfo {
+  h3 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: hsl(var(--foreground));
+    margin: 0;
+  }
+
+  p {
+    font-size: 0.875rem;
+    color: hsl(var(--primary));
+    margin: 0;
+  }
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.messagesContainer {
+  height: 24rem;
+  overflow-y: auto;
+  padding: 1.5rem;
+  background: hsl(var(--background));
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.messageWrapper {
+  display: flex;
+
+  &.userMessage {
+    justify-content: flex-end;
+  }
+
+  &.therapistMessage {
+    justify-content: flex-start;
+  }
+}
+
+.messageBubble {
+  max-width: 70%;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-soft);
+
+  &.user {
+    background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--primary) / 0.8));
+    color: white;
+    border-radius: 1rem 1rem 0.25rem 1rem;
+  }
+
+  &.therapist {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border) / 0.5);
+    color: hsl(var(--card-foreground));
+    border-radius: 1rem 1rem 1rem 0.25rem;
+  }
+}
+
+.senderName {
+  font-size: 0.75rem;
+  color: hsl(var(--secondary));
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.messageContent {
+  font-size: 0.875rem;
+  line-height: 1.75;
+}
+
+.messageTime {
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+
+  &.user {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  &.therapist {
+    color: hsl(var(--muted-foreground));
+  }
+}
+
+.inputContainer {
+  padding: 1.5rem;
+  border-top: 1px solid hsl(var(--border) / 0.5);
+  background: hsl(var(--card) / 0.5);
+  backdrop-filter: blur(8px);
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.inputField {
+  flex: 1;
+  position: relative;
+}
+
+.input {
+  height: 3rem;
+  border-radius: 0.75rem;
+  background: hsl(var(--muted) / 0.3);
+  border: 1px solid hsl(var(--border) / 0.5);
+  padding-right: 3rem;
+  padding-left: 1rem;
+  font-size: 0.875rem;
+  color: hsl(var(--foreground));
+
+  &:focus {
+    outline: none;
+    border-color: hsl(var(--primary));
+  }
+}
+
+.heartButton {
+  position: absolute;
+  right: 0.25rem;
+  top: 0.25rem;
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+.sendButton {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 0.75rem;
+}
+
+.privacyNote {
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
