@@ -2,15 +2,15 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "..
 const faqs = [
     {
       question: "How do I know if my therapist is qualified?",
-      answer: "All therapists on MindBridge are licensed mental health professionals who have passed rigorous background checks and credential verification. You can view their credentials, specializations, and patient reviews on their profiles.",
+      answer: "All therapists on Mental Health App are licensed mental health professionals who have passed rigorous background checks and credential verification. You can view their credentials, specializations, and patient reviews on their profiles.",
     },
     {
       question: "Is my information private and secure?",
-      answer: "Yes, we take your privacy seriously. MindBridge is HIPAA compliant and uses end-to-end encryption for all communications. Your personal information and conversations are completely confidential.",
+      answer: "Yes, we take your privacy seriously. Mental Health App is HIPAA compliant and uses end-to-end encryption for all communications. Your personal information and conversations are completely confidential.",
     },
     {
-      question: "What if I'm in a crisis situation?",
-      answer: "If you're experiencing a mental health crisis, please call 988 (Suicide & Crisis Lifeline) or 911 immediately. MindBridge is designed for ongoing therapy support, not emergency crisis intervention.",
+      question: "What if I&apos;m in a crisis situation?",
+      answer: "If you&apos;re experiencing a mental health crisis, please call 988 (Suicide & Crisis Lifeline) or 911 immediately. Mental Health App is designed for ongoing therapy support, not emergency crisis intervention.",
     },
     {
       question: "How much does therapy cost?",
