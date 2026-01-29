@@ -1,0 +1,54 @@
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../components/ui/accordion";
+const faqs = [
+    {
+      question: "How do I know if my therapist is qualified?",
+      answer: "All therapists on MindBridge are licensed mental health professionals who have passed rigorous background checks and credential verification. You can view their credentials, specializations, and patient reviews on their profiles.",
+    },
+    {
+      question: "Is my information private and secure?",
+      answer: "Yes, we take your privacy seriously. MindBridge is HIPAA compliant and uses end-to-end encryption for all communications. Your personal information and conversations are completely confidential.",
+    },
+    {
+      question: "What if I'm in a crisis situation?",
+      answer: "If you're experiencing a mental health crisis, please call 988 (Suicide & Crisis Lifeline) or 911 immediately. MindBridge is designed for ongoing therapy support, not emergency crisis intervention.",
+    },
+    {
+      question: "How much does therapy cost?",
+      answer: "Therapy sessions range from $80-200 per session depending on the therapist's experience and specialization. Many therapists offer sliding scale pricing, and we accept most major insurance plans.",
+    },
+    {
+      question: "Can I switch therapists if needed?",
+      answer: "Absolutely. Finding the right therapeutic fit is important for your healing journey. You can switch therapists at any time through your dashboard at no additional cost.",
+    },
+  ];
+export default function FaqSection() {
+    return (
+<section className="py-20 bg-[#1d2935]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground mb-4">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              We're here to address your concerns and help you feel comfortable
+            </p>
+          </div>
+
+          <div className="max-w-3xl mx-auto">
+            <Accordion type="single" collapsible className="space-y-4">
+              {faqs.map((faq, index) => (
+                <AccordionItem key={index} value={`item-${index}`} className="bg-card/50 backdrop-blur-sm border border-border rounded-lg px-6">
+                  <AccordionTrigger className="text-left font-display font-medium hover:text-primary">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground leading-relaxed">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </div>
+      </section>
+    )
+}

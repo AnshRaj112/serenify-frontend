@@ -3,6 +3,8 @@ import AboutUs from "./components/Landing/AboutUs";
 import TherapistGrid from "./components/Landing/TherapistGrid";
 import ChatInterface from "./components/Landing/ChatInterface";
 import TherapistRecruitment from "./components/Landing/TherapistRecruitment";
+import FaqSection from "./components/Landing/FaqSection";
+import ContactUs from "./components/Landing/ContactUs";
 
 const Index = () => {
   return (
@@ -12,6 +14,8 @@ const Index = () => {
       <TherapistGrid />
       <ChatInterface />
       <TherapistRecruitment />
+      <FaqSection />
+      <ContactUs />
     </main>
   );
 };
