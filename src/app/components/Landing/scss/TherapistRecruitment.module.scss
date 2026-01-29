@@ -14,6 +14,7 @@
   min-height: 100vh;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 @keyframes gradientShift {
@@ -29,10 +30,10 @@
 }
 
 .container {
-  max-width: 1280px;
+  max-width: 100%;
+  width: 100%;
   margin: 0 auto;
   padding: 0 1rem;
-  width: 100%;
 
   @media (min-width: 640px) {
     padding: 0 1.5rem;

@@ -2,11 +2,14 @@ import { Button } from "../ui/button";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-section-hero">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden m-0 p-0 w-full">
       {/* Hero Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url('/hero-landscape.jpg')` }}
+        style={{ 
+          backgroundImage: `url('/hero-landscape.jpg')`,
+          backgroundColor: '#1d2935'
+        }}
       >
         {/* Subtle overlay for text readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-muted/20"></div>

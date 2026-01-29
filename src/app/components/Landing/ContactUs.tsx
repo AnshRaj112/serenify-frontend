@@ -7,8 +7,8 @@ import {
 
 export default function ContactUs() {
     return (
-<section className="py-20 bg-[#1d2935]">
-<div className="container mx-auto px-4 sm:px-6 lg:px-8">
+<section className="py-20 bg-[#1d2935] w-full">
+<div className="w-full px-4 sm:px-6 lg:px-8">
   <div className="grid lg:grid-cols-2 gap-12 items-center">
     <div>
       <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground mb-6">
