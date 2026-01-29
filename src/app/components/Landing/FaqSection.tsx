@@ -14,7 +14,7 @@ const faqs = [
     },
     {
       question: "How much does therapy cost?",
-      answer: "Therapy sessions range from $80-200 per session depending on the therapist's experience and specialization. Many therapists offer sliding scale pricing, and we accept most major insurance plans.",
+      answer: "Therapy sessions range from $80-200 per session depending on the therapist&apos;s experience and specialization. Many therapists offer sliding scale pricing, and we accept most major insurance plans.",
     },
     {
       question: "Can I switch therapists if needed?",
