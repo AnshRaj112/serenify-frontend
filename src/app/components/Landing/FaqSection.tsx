@@ -30,7 +30,7 @@ export default function FaqSection() {
               Frequently Asked Questions
             </h2>
             <p className="text-lg text-muted-foreground">
-              We're here to address your concerns and help you feel comfortable
+              We&apos;re here to address your concerns and help you feel comfortable
             </p>
           </div>
 
