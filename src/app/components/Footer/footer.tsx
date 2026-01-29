@@ -103,7 +103,7 @@ export function Footer() {
                 Crisis Support Available 24/7
               </h4>
               <p className="text-sm text-muted-foreground">
-                If you're in crisis, help is available immediately
+                If you&apos;re in crisis, help is available immediately
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-2">
