@@ -54,7 +54,7 @@
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 2rem;
   font-weight: 700;
-  color: #6B4C93; // Darker purple matching the heading
+  color: #fff; // Darker purple matching the heading
   margin-bottom: 1.5rem;
 
   @media (min-width: 640px) {
@@ -68,7 +68,7 @@
 
 .mission {
   font-size: 1rem;
-  color: #6B4C93;
+  color: #fff;
   line-height: 1.75;
   font-weight: 400;
 
@@ -122,12 +122,12 @@
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 1.25rem;
   font-weight: 700;
-  color: #6B4C93;
+  color: #fff;
   margin-bottom: 0.75rem;
 }
 
 .featureDescription {
-  color: #6B4C93;
+  color: #fff;
   font-size: 0.9375rem;
   line-height: 1.6;
   font-weight: 400;
@@ -165,7 +165,7 @@
 .disclaimer {
   margin-top: 1rem;
   font-size: 0.75rem;
-  color: #9B7DB8; // Lighter gray-purple for disclaimer
+  color: #fff; // Lighter gray-purple for disclaimer
   font-weight: 400;
 }
 
