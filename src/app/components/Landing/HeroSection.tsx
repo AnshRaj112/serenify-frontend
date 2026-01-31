@@ -36,9 +36,11 @@ const HeroSection = () => {
               Get Started
             </Button>
           </Link>
-          <Button variant="hero-outline" className="w-full sm:w-auto">
-            Join as a Therapist
-          </Button>
+          <Link href="/therapist-signup">
+            <Button variant="hero-outline" className="w-full sm:w-auto">
+              Join as a Therapist
+            </Button>
+          </Link>
         </div>
         
       </div>

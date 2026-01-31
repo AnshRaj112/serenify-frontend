@@ -1,11 +1,33 @@
-.signinPage {
+.therapistSigninPage {
   min-height: 100vh;
-  background: linear-gradient(180deg, #1d2935 0%, #283848 100%);
+  background: linear-gradient(
+    135deg,
+    #c199d6 15%,
+    #c49cd8 25%,
+    #caa3dc 45%,
+    #caa3dc 65%,
+    #d4aee3 85%,
+    #d4aee3 100%
+  );
+  background-size: 200% 200%;
+  animation: gradientShift 15s ease infinite;
   width: 100%;
   padding: 2rem 0;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .container {
@@ -54,32 +76,32 @@
 .logoIcon {
   width: 3rem;
   height: 3rem;
-  background: var(--gradient-primary);
+  background: #F5E6FF;
   border-radius: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-floating);
+  box-shadow: 0 2px 8px rgba(107, 76, 147, 0.15);
 }
 
 .heartIcon {
   width: 1.75rem;
   height: 1.75rem;
-  color: hsl(var(--primary-foreground));
+  color: #6B4C93;
 }
 
 .brandName {
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 1.75rem;
   font-weight: 700;
-  color: hsl(var(--foreground));
+  color: #fff;
 }
 
 .storyTitle {
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 2.5rem;
   font-weight: 700;
-  color: hsl(var(--foreground));
+  color: #fff;
   margin-bottom: 1.5rem;
   line-height: 1.2;
 
@@ -93,17 +115,16 @@
 }
 
 .highlight {
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #F5E6FF;
+  text-shadow: 0 2px 4px rgba(107, 76, 147, 0.3);
 }
 
 .storyDescription {
   font-size: 1.125rem;
-  color: hsl(var(--muted-foreground));
+  color: #fff;
   line-height: 1.75;
   margin-bottom: 3rem;
+  opacity: 0.95;
 }
 
 .featuresList {
@@ -121,22 +142,26 @@
 .featureIcon {
   width: 2.5rem;
   height: 2.5rem;
-  color: hsl(var(--primary));
+  color: #6B4C93;
   flex-shrink: 0;
+  background: #F5E6FF;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
 }
 
 .featureTitle {
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 1.125rem;
   font-weight: 600;
-  color: hsl(var(--foreground));
+  color: #fff;
   margin-bottom: 0.25rem;
 }
 
 .featureText {
   font-size: 0.875rem;
-  color: hsl(var(--muted-foreground));
+  color: #fff;
   line-height: 1.5;
+  opacity: 0.9;
 }
 
 .formSection {
@@ -148,24 +173,25 @@
 .formCard {
   width: 100%;
   max-width: 500px;
-  background: hsl(var(--card) / 0.5);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(8px);
-  border: 1px solid hsl(var(--border));
-  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(107, 76, 147, 0.2);
+  box-shadow: 0 8px 32px rgba(107, 76, 147, 0.2);
 }
 
 .formTitle {
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 1.875rem;
   font-weight: 700;
-  color: hsl(var(--foreground));
+  color: #6B4C93;
   margin-bottom: 0.5rem;
 }
 
 .formSubtitle {
   font-size: 0.875rem;
-  color: hsl(var(--muted-foreground));
+  color: #6B4C93;
   line-height: 1.5;
+  opacity: 0.8;
 }
 
 .form {
@@ -183,24 +209,25 @@
 .label {
   font-size: 0.875rem;
   font-weight: 500;
-  color: hsl(var(--foreground));
+  color: #6B4C93;
 }
 
 .input {
-  background: hsl(var(--background));
-  border: 1px solid hsl(var(--border));
-  color: hsl(var(--foreground));
+  background: #fff;
+  border: 1px solid rgba(107, 76, 147, 0.3);
+  color: #6B4C93;
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
   transition: all 0.3s ease;
 
   &:focus {
-    border-color: hsl(var(--primary));
-    box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
+    border-color: #6B4C93;
+    box-shadow: 0 0 0 3px rgba(107, 76, 147, 0.1);
+    outline: none;
   }
 
   &::placeholder {
-    color: hsl(var(--muted-foreground));
+    color: rgba(107, 76, 147, 0.5);
   }
 }
 
@@ -220,16 +247,16 @@
   align-items: center;
   justify-content: center;
   padding: 0.25rem;
-  color: hsl(var(--muted-foreground));
+  color: rgba(107, 76, 147, 0.6);
   transition: color 0.3s ease;
 
   &:hover {
-    color: hsl(var(--primary));
+    color: #6B4C93;
   }
 
   &:focus {
     outline: none;
-    color: hsl(var(--primary));
+    color: #6B4C93;
   }
 }
 
@@ -246,12 +273,12 @@
 
 .forgotLink {
   font-size: 0.875rem;
-  color: hsl(var(--primary));
+  color: #6B4C93;
   text-decoration: none;
   transition: color 0.3s ease;
 
   &:hover {
-    color: hsl(var(--primary) / 0.8);
+    color: #5a3f7a;
     text-decoration: underline;
   }
 }
@@ -263,6 +290,12 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  background: #6B4C93 !important;
+  color: #fff !important;
+
+  &:hover {
+    background: #5a3f7a !important;
+  }
 }
 
 .buttonIcon {
@@ -270,59 +303,22 @@
   height: 1.25rem;
 }
 
-.divider {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 0.5rem 0;
-
-  &::before,
-  &::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid hsl(var(--border));
-  }
-
-  span {
-    padding: 0 1rem;
-    color: hsl(var(--muted-foreground));
-    font-size: 0.875rem;
-  }
-}
-
-.therapistLink {
-  width: 100%;
-  display: block;
-  text-decoration: none;
-}
-
-.therapistButton {
-  width: 100%;
-  border-color: hsl(var(--secondary));
-  color: hsl(var(--secondary-foreground));
-  background: transparent;
-
-  &:hover {
-    background: hsl(var(--secondary));
-    color: hsl(var(--secondary-foreground));
-  }
-}
-
 .signupLink {
   text-align: center;
   font-size: 0.875rem;
-  color: hsl(var(--muted-foreground));
+  color: #6B4C93;
   margin-top: 1rem;
+  opacity: 0.8;
 }
 
 .link {
-  color: hsl(var(--primary));
+  color: #6B4C93;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
 
   &:hover {
-    color: hsl(var(--primary) / 0.8);
+    color: #5a3f7a;
     text-decoration: underline;
   }
 }

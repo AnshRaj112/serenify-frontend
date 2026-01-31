@@ -5,10 +5,10 @@ import Link from "next/link";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Heart, ArrowRight, Shield, Users, Sparkles, LogIn, Eye, EyeOff } from "lucide-react";
-import styles from "./Signin.module.scss";
+import { Heart, ArrowRight, Shield, Users, Award, LogIn, Eye, EyeOff } from "lucide-react";
+import styles from "./TherapistSignin.module.scss";
 
-export default function SigninPage() {
+export default function TherapistSigninPage() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -26,11 +26,11 @@ export default function SigninPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Form submission logic will be added when backend is ready
-    console.log("Signin form submitted", formData);
+    console.log("Therapist signin form submitted", formData);
   };
 
   return (
-    <div className={styles.signinPage}>
+    <div className={styles.therapistSigninPage}>
       <div className={styles.container}>
         <div className={styles.contentWrapper}>
           {/* Story Section */}
@@ -44,34 +44,34 @@ export default function SigninPage() {
               </div>
               
               <h2 className={styles.storyTitle}>
-                Welcome <span className={styles.highlight}>Back</span>
+                Welcome <span className={styles.highlight}>Back</span>, Therapist
               </h2>
               
               <p className={styles.storyDescription}>
-                Your journey continues here. We&apos;re here to support you every step of the way. 
-                Sign in to reconnect with your therapist and continue your path to wellness.
+                Your journey to help others continues here. Sign in to access your dashboard, 
+                manage your clients, and continue making a difference in people&apos;s lives.
               </p>
 
               <div className={styles.featuresList}>
                 <div className={styles.featureItem}>
                   <Shield className={styles.featureIcon} />
                   <div>
-                    <h3 className={styles.featureTitle}>Your Safe Space</h3>
-                    <p className={styles.featureText}>All your conversations are secure and private</p>
+                    <h3 className={styles.featureTitle}>Your Professional Dashboard</h3>
+                    <p className={styles.featureText}>Access all your tools and resources</p>
                   </div>
                 </div>
                 <div className={styles.featureItem}>
                   <Users className={styles.featureIcon} />
                   <div>
-                    <h3 className={styles.featureTitle}>Continue Your Journey</h3>
-                    <p className={styles.featureText}>Pick up right where you left off</p>
+                    <h3 className={styles.featureTitle}>Manage Your Clients</h3>
+                    <p className={styles.featureText}>Continue supporting those in your care</p>
                   </div>
                 </div>
                 <div className={styles.featureItem}>
-                  <Sparkles className={styles.featureIcon} />
+                  <Award className={styles.featureIcon} />
                   <div>
-                    <h3 className={styles.featureTitle}>Track Your Progress</h3>
-                    <p className={styles.featureText}>See how far you&apos;ve come</p>
+                    <h3 className={styles.featureTitle}>Track Your Impact</h3>
+                    <p className={styles.featureText}>See the difference you&apos;re making</p>
                   </div>
                 </div>
               </div>
@@ -136,7 +136,7 @@ export default function SigninPage() {
                   </div>
 
                   <div className={styles.forgotPassword}>
-                    <Link href="/forgot-password" className={styles.forgotLink}>
+                    <Link href="/therapist-forgot-password" className={styles.forgotLink}>
                       Forgot your password?
                     </Link>
                   </div>
@@ -152,25 +152,10 @@ export default function SigninPage() {
                     <ArrowRight className={styles.buttonIcon} />
                   </Button>
 
-                  <div className={styles.divider}>
-                    <span>or</span>
-                  </div>
-
-                  <Link href="/therapist-signin" className={styles.therapistLink}>
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      className={styles.therapistButton}
-                      size="lg"
-                    >
-                      Sign In as Therapist
-                    </Button>
-                  </Link>
-
                   <p className={styles.signupLink}>
                     Don&apos;t have an account?{" "}
-                    <Link href="/signup" className={styles.link}>
-                      Create Account
+                    <Link href="/therapist-signup" className={styles.link}>
+                      Apply Now
                     </Link>
                   </p>
                 </form>

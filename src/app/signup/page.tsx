@@ -239,14 +239,16 @@ export default function SignupPage() {
                         <span>or</span>
                       </div>
 
-                      <Button 
-                        type="button" 
-                        variant="outline" 
-                        className={styles.therapistButton}
-                        size="lg"
-                      >
-                        Sign Up as Therapist
-                      </Button>
+                      <Link href="/therapist-signup" className={styles.therapistLink}>
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          className={styles.therapistButton}
+                          size="lg"
+                        >
+                          Sign Up as Therapist
+                        </Button>
+                      </Link>
 
                       <p className={styles.loginLink}>
                         Already have an account?{" "}
