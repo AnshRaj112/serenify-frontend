@@ -1,14 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Heart, ArrowRight, Shield, Users, Award, Eye, EyeOff, GraduationCap, FileText, Upload, BookOpen } from "lucide-react";
+import { api, ApiError } from "../lib/api";
 import styles from "./TherapistSignup.module.scss";
 
 export default function TherapistSignupPage() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     name: "",
@@ -32,12 +35,15 @@ export default function TherapistSignupPage() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+    setError(null);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: string) => {
@@ -55,14 +61,16 @@ export default function TherapistSignupPage() {
       // Validate step 1 fields
       if (formData.name && formData.email && formData.password && formData.confirmPassword) {
         if (formData.password !== formData.confirmPassword) {
-          alert("Passwords do not match");
+          setError("Passwords do not match");
           return;
         }
+        setError(null);
         setCurrentStep(2);
       }
     } else if (currentStep === 2) {
       // Validate step 2 fields
       if (formData.licenseNumber && formData.licenseState && formData.yearsOfExperience && formData.phone) {
+        setError(null);
         setCurrentStep(3);
       }
     }
@@ -71,13 +79,51 @@ export default function TherapistSignupPage() {
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
+      setError(null);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Form submission logic will be added when backend is ready
-    console.log("Therapist signup form submitted", formData);
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // Note: File uploads would need to be handled separately via FormData
+      // For now, we'll send the form data without files
+      const signupData = {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        license_number: formData.licenseNumber,
+        license_state: formData.licenseState,
+        years_of_experience: parseInt(formData.yearsOfExperience) || 0,
+        specialization: formData.specialization,
+        phone: formData.phone,
+        college_degree: formData.collegeDegree,
+        masters_institution: formData.mastersInstitution,
+        psychologist_type: formData.psychologistType,
+        successful_cases: parseInt(formData.successfulCases) || 0,
+        dsm_awareness: formData.dsmAwareness,
+        therapy_types: formData.therapyTypes,
+        // File paths would be set after upload
+        certificate_image_path: "",
+        degree_image_path: "",
+      };
+
+      const response = await api.therapistSignup(signupData);
+      if (response.success) {
+        // Store therapist data in localStorage
+        localStorage.setItem("therapist", JSON.stringify(response.user));
+        // Redirect to pending approval page
+        router.push("/therapist-pending");
+      }
+    } catch (err) {
+      const apiError = err as ApiError;
+      setError(apiError.message || "Failed to submit application. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -169,6 +215,11 @@ export default function TherapistSignupPage() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={currentStep === 3 ? handleSubmit : handleNext} className={styles.form}>
+                  {error && (
+                    <div className={styles.errorMessage} style={{ color: 'red', marginBottom: '1rem', padding: '0.75rem', backgroundColor: '#fee', borderRadius: '4px' }}>
+                      {error}
+                    </div>
+                  )}
                   {currentStep === 1 ? (
                     <>
                       <div className={styles.formGroup}>
@@ -568,8 +619,9 @@ export default function TherapistSignupPage() {
                           variant="healing" 
                           className={styles.submitButton}
                           size="lg"
+                          disabled={isLoading}
                         >
-                          Submit Application
+                          {isLoading ? "Submitting..." : "Submit Application"}
                           <ArrowRight className={styles.buttonIcon} />
                         </Button>
                       </div>

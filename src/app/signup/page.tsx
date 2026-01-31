@@ -1,14 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Heart, ArrowRight, Shield, Users, Sparkles, Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { api, ApiError } from "../lib/api";
 import styles from "./Signup.module.scss";
 
 export default function SignupPage() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     name: "",
@@ -24,12 +27,15 @@ export default function SignupPage() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+    setError(null);
   };
 
   const handleNext = (e: React.FormEvent) => {
@@ -37,21 +43,49 @@ export default function SignupPage() {
     // Validate step 1 fields
     if (formData.name && formData.email && formData.password && formData.confirmPassword) {
       if (formData.password !== formData.confirmPassword) {
-        alert("Passwords do not match");
+        setError("Passwords do not match");
         return;
       }
+      setError(null);
       setCurrentStep(2);
     }
   };
 
   const handleBack = () => {
     setCurrentStep(1);
+    setError(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Form submission logic will be added when backend is ready
-    console.log("Signup form submitted", formData);
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const signupData = {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        street: formData.street,
+        city: formData.city,
+        state: formData.state,
+        zip_code: formData.zipCode,
+        country: formData.country,
+      };
+
+      const response = await api.userSignup(signupData);
+      if (response.success) {
+        // Store user data in localStorage
+        localStorage.setItem("user", JSON.stringify(response.user));
+        // Redirect to dashboard or home
+        router.push("/");
+      }
+    } catch (err) {
+      const apiError = err as ApiError;
+      setError(apiError.message || "Failed to create account. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -131,6 +165,11 @@ export default function SignupPage() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={currentStep === 1 ? handleNext : handleSubmit} className={styles.form}>
+                  {error && (
+                    <div className={styles.errorMessage} style={{ color: 'red', marginBottom: '1rem', padding: '0.75rem', backgroundColor: '#fee', borderRadius: '4px' }}>
+                      {error}
+                    </div>
+                  )}
                   {currentStep === 1 ? (
                     <>
                       <div className={styles.formGroup}>
@@ -354,8 +393,9 @@ export default function SignupPage() {
                           variant="healing" 
                           className={styles.submitButton}
                           size="lg"
+                          disabled={isLoading}
                         >
-                          Create Account
+                          {isLoading ? "Creating Account..." : "Create Account"}
                           <ArrowRight className={styles.buttonIcon} />
                         </Button>
                       </div>

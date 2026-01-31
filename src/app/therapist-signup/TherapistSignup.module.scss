@@ -337,8 +337,10 @@
   font-family: inherit;
   font-size: 0.875rem;
   resize: vertical;
-  min-height: 120px;
+  height: 200px;
+  min-height: 200px;
   line-height: 1.5;
+  width: 100%;
 
   &:focus {
     border-color: #6B4C93;

@@ -1,32 +1,53 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Heart, ArrowRight, Shield, Users, Sparkles, LogIn, Eye, EyeOff } from "lucide-react";
+import { api, ApiError } from "../lib/api";
 import styles from "./Signin.module.scss";
 
 export default function SigninPage() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+    setError(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Form submission logic will be added when backend is ready
-    console.log("Signin form submitted", formData);
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await api.userSignin(formData);
+      if (response.success) {
+        // Store user data in localStorage
+        localStorage.setItem("user", JSON.stringify(response.user));
+        // Redirect to dashboard or home
+        router.push("/");
+      }
+    } catch (err) {
+      const apiError = err as ApiError;
+      setError(apiError.message || "Failed to sign in. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -89,6 +110,11 @@ export default function SigninPage() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className={styles.form}>
+                  {error && (
+                    <div className={styles.errorMessage} style={{ color: 'red', marginBottom: '1rem', padding: '0.75rem', backgroundColor: '#fee', borderRadius: '4px' }}>
+                      {error}
+                    </div>
+                  )}
                   <div className={styles.formGroup}>
                     <label htmlFor="email" className={styles.label}>
                       Email Address
@@ -146,9 +172,10 @@ export default function SigninPage() {
                     variant="healing" 
                     className={styles.submitButton}
                     size="lg"
+                    disabled={isLoading}
                   >
                     <LogIn className={styles.buttonIcon} />
-                    Sign In
+                    {isLoading ? "Signing In..." : "Sign In"}
                     <ArrowRight className={styles.buttonIcon} />
                   </Button>
 
