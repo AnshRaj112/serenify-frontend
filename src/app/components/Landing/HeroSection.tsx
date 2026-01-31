@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "../ui/button";
 
 const HeroSection = () => {
@@ -30,9 +31,11 @@ const HeroSection = () => {
         
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-          <Button variant="hero" className="w-full sm:w-auto">
-            Get Started
-          </Button>
+          <Link href="/signup">
+            <Button variant="hero" className="w-full sm:w-auto">
+              Get Started
+            </Button>
+          </Link>
           <Button variant="hero-outline" className="w-full sm:w-auto">
             Join as a Therapist
           </Button>

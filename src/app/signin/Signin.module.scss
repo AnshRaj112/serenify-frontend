@@ -1,0 +1,323 @@
+.signinPage {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #1d2935 0%, #283848 100%);
+  width: 100%;
+  padding: 2rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+
+  @media (min-width: 640px) {
+    padding: 0 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 0 2rem;
+  }
+}
+
+.contentWrapper {
+  display: grid;
+  gap: 3rem;
+  align-items: center;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+}
+
+.storySection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.storyContent {
+  max-width: 600px;
+}
+
+.logoWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.logoIcon {
+  width: 3rem;
+  height: 3rem;
+  background: var(--gradient-primary);
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-floating);
+}
+
+.heartIcon {
+  width: 1.75rem;
+  height: 1.75rem;
+  color: hsl(var(--primary-foreground));
+}
+
+.brandName {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+}
+
+.storyTitle {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+
+  @media (min-width: 640px) {
+    font-size: 3rem;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 3.5rem;
+  }
+}
+
+.highlight {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.storyDescription {
+  font-size: 1.125rem;
+  color: hsl(var(--muted-foreground));
+  line-height: 1.75;
+  margin-bottom: 3rem;
+}
+
+.featuresList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.featureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.featureIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: hsl(var(--primary));
+  flex-shrink: 0;
+}
+
+.featureTitle {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.25rem;
+}
+
+.featureText {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  line-height: 1.5;
+}
+
+.formSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.formCard {
+  width: 100%;
+  max-width: 500px;
+  background: hsl(var(--card) / 0.5);
+  backdrop-filter: blur(8px);
+  border: 1px solid hsl(var(--border));
+  box-shadow: var(--shadow-card);
+}
+
+.formTitle {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.5rem;
+}
+
+.formSubtitle {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  line-height: 1.5;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(var(--foreground));
+}
+
+.input {
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+
+  &:focus {
+    border-color: hsl(var(--primary));
+    box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
+  }
+
+  &::placeholder {
+    color: hsl(var(--muted-foreground));
+  }
+}
+
+.passwordWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.eyeButton {
+  position: absolute;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  color: hsl(var(--muted-foreground));
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: hsl(var(--primary));
+  }
+
+  &:focus {
+    outline: none;
+    color: hsl(var(--primary));
+  }
+}
+
+.eyeIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.forgotPassword {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -0.5rem;
+}
+
+.forgotLink {
+  font-size: 0.875rem;
+  color: hsl(var(--primary));
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: hsl(var(--primary) / 0.8);
+    text-decoration: underline;
+  }
+}
+
+.submitButton {
+  width: 100%;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.buttonIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 0.5rem 0;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid hsl(var(--border));
+  }
+
+  span {
+    padding: 0 1rem;
+    color: hsl(var(--muted-foreground));
+    font-size: 0.875rem;
+  }
+}
+
+.therapistButton {
+  width: 100%;
+  border-color: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+  background: transparent;
+
+  &:hover {
+    background: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+  }
+}
+
+.signupLink {
+  text-align: center;
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  margin-top: 1rem;
+}
+
+.link {
+  color: hsl(var(--primary));
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: hsl(var(--primary) / 0.8);
+    text-decoration: underline;
+  }
+}
+
