@@ -48,7 +48,7 @@ export default function SigninPage() {
               </h2>
               
               <p className={styles.storyDescription}>
-                Your journey continues here. We're here to support you every step of the way. 
+                Your journey continues here. We&apos;re here to support you every step of the way. 
                 Sign in to reconnect with your therapist and continue your path to wellness.
               </p>
 
@@ -71,7 +71,7 @@ export default function SigninPage() {
                   <Sparkles className={styles.featureIcon} />
                   <div>
                     <h3 className={styles.featureTitle}>Track Your Progress</h3>
-                    <p className={styles.featureText}>See how far you've come</p>
+                    <p className={styles.featureText}>See how far you&apos;ve come</p>
                   </div>
                 </div>
               </div>
@@ -84,7 +84,7 @@ export default function SigninPage() {
               <CardHeader>
                 <CardTitle className={styles.formTitle}>Sign In to Your Account</CardTitle>
                 <p className={styles.formSubtitle}>
-                  Welcome back! We're glad you're here.
+                  Welcome back! We&apos;re glad you&apos;re here.
                 </p>
               </CardHeader>
               <CardContent>
@@ -166,7 +166,7 @@ export default function SigninPage() {
                   </Button>
 
                   <p className={styles.signupLink}>
-                    Don't have an account?{" "}
+                    Don&apos;t have an account?{" "}
                     <Link href="/signup" className={styles.link}>
                       Create Account
                     </Link>
