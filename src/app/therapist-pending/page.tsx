@@ -6,19 +6,24 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Heart, Clock, CheckCircle, Mail, ArrowLeft } from "lucide-react";
-import { api } from "../lib/api";
+import { api, Therapist } from "../lib/api";
 import styles from "./TherapistPending.module.scss";
 
 export default function TherapistPendingPage() {
   const router = useRouter();
-  const [therapistData, setTherapistData] = useState<any>(null);
+  const [therapistData, setTherapistData] = useState<Therapist | null>(null);
 
   useEffect(() => {
     // Get therapist data from localStorage
     const stored = localStorage.getItem("therapist");
     if (stored) {
-      const data = JSON.parse(stored);
-      setTherapistData(data);
+      try {
+        const data = JSON.parse(stored) as Therapist;
+        setTherapistData(data);
+      } catch (error) {
+        console.error("Error parsing therapist data:", error);
+        router.push("/therapist-signup");
+      }
     } else {
       // If no data, redirect to signup
       router.push("/therapist-signup");
@@ -29,10 +34,10 @@ export default function TherapistPendingPage() {
     if (!therapistData?.email) return;
     
     try {
-      const response: any = await api.checkTherapistStatus(therapistData.email);
+      const response = await api.checkTherapistStatus(therapistData.email);
       if (response.is_approved) {
         // Update localStorage
-        const updatedTherapist = { ...therapistData, is_approved: true };
+        const updatedTherapist: Therapist = { ...therapistData, is_approved: true };
         localStorage.setItem("therapist", JSON.stringify(updatedTherapist));
         // Show success message and redirect to signin
         alert("Great news! Your application has been approved. You can now sign in.");

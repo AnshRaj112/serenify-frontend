@@ -52,6 +52,34 @@ export interface TherapistSigninData {
   password: string;
 }
 
+export interface Therapist {
+  id: string;
+  name: string;
+  email: string;
+  created_at: string;
+  license_number: string;
+  license_state: string;
+  years_of_experience: number;
+  specialization?: string;
+  phone: string;
+  college_degree: string;
+  masters_institution: string;
+  psychologist_type: string;
+  successful_cases: number;
+  dsm_awareness: string;
+  therapy_types: string;
+  certificate_image_path?: string;
+  degree_image_path?: string;
+  is_approved: boolean;
+}
+
+export interface TherapistStatusResponse {
+  is_approved: boolean;
+  email: string;
+  name: string;
+  message: string;
+}
+
 async function apiRequest<T>(
   endpoint: string,
   options: RequestInit = {}
@@ -111,18 +139,18 @@ export const api = {
     }),
 
   // Therapist status
-  checkTherapistStatus: (email: string) =>
-    fetch(`${API_BASE_URL}/api/therapist/status?email=${encodeURIComponent(email)}`, {
+  checkTherapistStatus: async (email: string): Promise<TherapistStatusResponse> => {
+    const response = await fetch(`${API_BASE_URL}/api/therapist/status?email=${encodeURIComponent(email)}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then(async (response) => {
-      const data = await response.json();
-      if (!response.ok) {
-        throw { message: data.message || `HTTP error! status: ${response.status}`, status: response.status } as ApiError;
-      }
-      return data;
-    }),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw { message: data.message || `HTTP error! status: ${response.status}`, status: response.status } as ApiError;
+    }
+    return data as TherapistStatusResponse;
+  },
 };
 
