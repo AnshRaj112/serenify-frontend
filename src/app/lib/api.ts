@@ -152,5 +152,27 @@ export const api = {
     }
     return data as TherapistStatusResponse;
   },
+
+  // File upload
+  uploadFile: async (file: File, folder: string = 'serenify'): Promise<string> => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch(`${API_BASE_URL}/api/upload?folder=${encodeURIComponent(folder)}`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw { message: data.message || `HTTP error! status: ${response.status}`, status: response.status } as ApiError;
+    }
+
+    if (!data.success || !data.url) {
+      throw { message: 'Upload failed: No URL returned', status: 500 } as ApiError;
+    }
+
+    return data.url;
+  },
 };
 

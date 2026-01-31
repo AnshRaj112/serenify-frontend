@@ -37,6 +37,8 @@ export default function TherapistSignupPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [uploadingCertificate, setUploadingCertificate] = useState(false);
+  const [uploadingDegree, setUploadingDegree] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -48,10 +50,30 @@ export default function TherapistSignupPage() {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: string) => {
     if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+      if (!validTypes.includes(file.type)) {
+        setError(`Invalid file type. Please upload JPG, PNG, or PDF files.`);
+        e.target.value = ''; // Clear the input
+        return;
+      }
+
+      // Validate file size (max 10MB)
+      const maxSize = 10 * 1024 * 1024; // 10MB
+      if (file.size > maxSize) {
+        setError(`File size too large. Please upload files smaller than 10MB.`);
+        e.target.value = ''; // Clear the input
+        return;
+      }
+
+      // Set file in form data
       setFormData({
         ...formData,
-        [fieldName]: e.target.files[0],
+        [fieldName]: file,
       });
+      setError(null);
     }
   };
 
@@ -89,8 +111,46 @@ export default function TherapistSignupPage() {
     setError(null);
 
     try {
-      // Note: File uploads would need to be handled separately via FormData
-      // For now, we'll send the form data without files
+      // Upload files first
+      let certificateImagePath = "";
+      let degreeImagePath = "";
+
+      if (formData.certificateImage) {
+        try {
+          certificateImagePath = await api.uploadFile(formData.certificateImage, "serenify/certificates");
+        } catch (uploadError) {
+          const uploadErr = uploadError as ApiError;
+          setError(`Failed to upload certificate: ${uploadErr.message}`);
+          setIsLoading(false);
+          return;
+        }
+      }
+
+      if (formData.degreeImage) {
+        try {
+          degreeImagePath = await api.uploadFile(formData.degreeImage, "serenify/degrees");
+        } catch (uploadError) {
+          const uploadErr = uploadError as ApiError;
+          setError(`Failed to upload degree: ${uploadErr.message}`);
+          setIsLoading(false);
+          return;
+        }
+      }
+
+      // Validate that required files are uploaded
+      if (!certificateImagePath) {
+        setError("Please upload your certificate/license image");
+        setIsLoading(false);
+        return;
+      }
+
+      if (!degreeImagePath) {
+        setError("Please upload your degree image");
+        setIsLoading(false);
+        return;
+      }
+
+      // Submit signup data with file URLs
       const signupData = {
         name: formData.name,
         email: formData.email,
@@ -106,9 +166,8 @@ export default function TherapistSignupPage() {
         successful_cases: parseInt(formData.successfulCases) || 0,
         dsm_awareness: formData.dsmAwareness,
         therapy_types: formData.therapyTypes,
-        // File paths would be set after upload
-        certificate_image_path: "",
-        degree_image_path: "",
+        certificate_image_path: certificateImagePath,
+        degree_image_path: degreeImagePath,
       };
 
       const response = await api.therapistSignup(signupData);
@@ -555,7 +614,7 @@ export default function TherapistSignupPage() {
                             type="file"
                             id="certificateImage"
                             name="certificateImage"
-                            accept="image/*"
+                            accept="image/*,.pdf,application/pdf"
                             onChange={(e) => handleFileChange(e, "certificateImage")}
                             required
                             className={styles.fileInput}
@@ -579,7 +638,7 @@ export default function TherapistSignupPage() {
                             type="file"
                             id="degreeImage"
                             name="degreeImage"
-                            accept="image/*"
+                            accept="image/*,.pdf,application/pdf"
                             onChange={(e) => handleFileChange(e, "degreeImage")}
                             required
                             className={styles.fileInput}
