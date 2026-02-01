@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Button } from "../ui/therapistbutton";
 import { CardTherapist, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/CardTherapist";
 import { Badge } from "../ui/badge";
@@ -61,9 +62,11 @@ const TherapistGrid = () => {
             <CardTherapist key={therapist.id} className="group hover:scale-[1.02] transition-all duration-300">
               <CardHeader className="text-center pb-4">
                 <div className="relative mx-auto mb-4">
-                  <img
+                  <Image
                     src={therapist.image}
                     alt={therapist.name}
+                    width={96}
+                    height={96}
                     className="w-24 h-24 rounded-full object-cover mx-auto shadow-soft"
                   />
                   {therapist.availableToday && (

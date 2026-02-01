@@ -126,7 +126,7 @@ export const api = {
     }),
 
   // Therapist auth - accepts FormData with files and form fields
-  therapistSignup: async (formData: FormData): Promise<ApiResponse<any>> => {
+  therapistSignup: async (formData: FormData): Promise<ApiResponse<Therapist>> => {
     const url = `${API_BASE_URL}/api/auth/therapist/signup`;
     
     try {
@@ -202,7 +202,7 @@ export const api = {
       let data;
       try {
         data = await response.json();
-      } catch (jsonError) {
+      } catch {
         const text = await response.text();
         console.error('Failed to parse response as JSON:', text);
         throw { message: `Server error: ${text}`, status: response.status } as ApiError;

@@ -239,7 +239,7 @@ export default function AdminDashboard() {
                 <h3>Education</h3>
                 <div className={styles.detailGrid}>
                   <div><strong>College Degree:</strong> {selectedTherapist.college_degree}</div>
-                  <div><strong>Master's Institution:</strong> {selectedTherapist.masters_institution}</div>
+                  <div><strong>Master&apos;s Institution:</strong> {selectedTherapist.masters_institution}</div>
                   <div><strong>Psychologist Type:</strong> {selectedTherapist.psychologist_type}</div>
                   <div><strong>Successful Cases:</strong> {selectedTherapist.successful_cases}</div>
                 </div>

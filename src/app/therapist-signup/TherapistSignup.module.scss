@@ -13,14 +13,13 @@
   animation: gradientShift 15s ease infinite;
   width: 100%;
   padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   @media (min-width: 640px) {
     padding: 2rem 0;
   }
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 @keyframes gradientShift {
