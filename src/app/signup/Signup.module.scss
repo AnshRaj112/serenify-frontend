@@ -331,6 +331,14 @@
   justify-content: center;
   gap: 0.5rem;
   min-width: 100px;
+  border-color: hsl(175 34% 55%) !important;
+  color: hsl(175 34% 55%) !important;
+
+  &:hover {
+    background: hsl(175 34% 55% / 0.1) !important;
+    border-color: hsl(175 34% 55%) !important;
+    color: hsl(175 34% 55%) !important;
+  }
 }
 
 .submitButton {

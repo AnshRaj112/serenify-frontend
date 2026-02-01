@@ -12,7 +12,12 @@
   background-size: 200% 200%;
   animation: gradientShift 15s ease infinite;
   width: 100%;
-  padding: 2rem 0;
+  padding: 1rem 0;
+
+  @media (min-width: 640px) {
+    padding: 2rem 0;
+  }
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,8 +52,12 @@
 
 .contentWrapper {
   display: grid;
-  gap: 3rem;
+  gap: 2rem;
   align-items: center;
+
+  @media (min-width: 640px) {
+    gap: 3rem;
+  }
 
   @media (min-width: 1024px) {
     grid-template-columns: 1fr 1fr;
@@ -57,9 +66,13 @@
 }
 
 .storySection {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: none;
+
+  @media (min-width: 1024px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .storyContent {
@@ -177,40 +190,64 @@
   backdrop-filter: blur(8px);
   border: 1px solid rgba(107, 76, 147, 0.2);
   box-shadow: 0 8px 32px rgba(107, 76, 147, 0.2);
+  margin: 0 auto;
+
+  @media (max-width: 639px) {
+    border-radius: 1rem;
+    margin: 0 0.5rem;
+  }
 }
 
 .stepIndicator {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.5rem;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid rgba(107, 76, 147, 0.2);
+
+  @media (min-width: 640px) {
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
 }
 
 .step {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.25rem;
   flex: 1;
   position: relative;
+  min-width: 0;
+
+  @media (min-width: 640px) {
+    gap: 0.5rem;
+  }
 }
 
 .stepNumber {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   background: #F5E6FF;
   color: #6B4C93;
   border: 2px solid rgba(107, 76, 147, 0.3);
   transition: all 0.3s ease;
+  flex-shrink: 0;
+
+  @media (min-width: 640px) {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 0.875rem;
+  }
 }
 
 .step.active .stepNumber {
@@ -221,11 +258,19 @@
 }
 
 .stepLabel {
-  font-size: 0.75rem;
+  font-size: 0.625rem;
   color: #6B4C93;
   text-align: center;
   transition: color 0.3s ease;
   opacity: 0.7;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+
+  @media (min-width: 640px) {
+    font-size: 0.75rem;
+  }
 }
 
 .step.active .stepLabel {
@@ -238,11 +283,17 @@
   flex: 1;
   height: 2px;
   background: rgba(107, 76, 147, 0.2);
-  margin: 0 0.5rem;
-  margin-top: -1.25rem;
+  margin: 0 0.25rem;
+  margin-top: -1rem;
   transition: background 0.3s ease;
   position: relative;
   z-index: 0;
+  min-width: 0.5rem;
+
+  @media (min-width: 640px) {
+    margin: 0 0.5rem;
+    margin-top: -1.25rem;
+  }
 
   &.active {
     background: #6B4C93;
@@ -251,24 +302,38 @@
 
 .formTitle {
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: 1.875rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #6B4C93;
   margin-bottom: 0.5rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
+  line-height: 1.3;
+
+  @media (min-width: 640px) {
+    font-size: 1.875rem;
+    margin-top: 1rem;
+  }
 }
 
 .formSubtitle {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: #6B4C93;
   line-height: 1.5;
   opacity: 0.8;
+
+  @media (min-width: 640px) {
+    font-size: 0.875rem;
+  }
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
+
+  @media (min-width: 640px) {
+    gap: 1.5rem;
+  }
 }
 
 .formGroup {
@@ -337,10 +402,20 @@
   font-family: inherit;
   font-size: 0.875rem;
   resize: vertical;
-  height: 200px;
-  min-height: 200px;
+  height: 120px;
+  min-height: 120px;
   line-height: 1.5;
   width: 100%;
+
+  @media (min-width: 640px) {
+    height: 150px;
+    min-height: 150px;
+  }
+
+  @media (min-width: 768px) {
+    height: 200px;
+    min-height: 200px;
+  }
 
   &:focus {
     border-color: #6B4C93;
@@ -376,16 +451,23 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 0.75rem;
   background: #F5E6FF;
   border: 2px dashed rgba(107, 76, 147, 0.3);
   border-radius: 0.5rem;
   color: #6B4C93;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 500;
   min-height: 3rem;
+  word-break: break-word;
+  text-align: center;
+
+  @media (min-width: 640px) {
+    font-size: 0.875rem;
+    padding: 0.75rem 1rem;
+  }
 
   &:hover {
     background: rgba(245, 230, 255, 0.8);
@@ -446,10 +528,14 @@
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
-  padding: 1rem;
+  padding: 0.75rem;
   background: #F5E6FF;
   border-radius: 0.5rem;
   border: 1px solid rgba(107, 76, 147, 0.2);
+
+  @media (min-width: 640px) {
+    padding: 1rem;
+  }
 }
 
 .disclaimerIcon {
@@ -461,16 +547,26 @@
 }
 
 .disclaimerText {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   color: #6B4C93;
   line-height: 1.5;
   margin: 0;
+
+  @media (min-width: 640px) {
+    font-size: 0.75rem;
+  }
 }
 
 .buttonGroup {
   display: flex;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0.75rem;
   margin-top: 0.5rem;
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+    gap: 1rem;
+  }
 }
 
 .backButton {
@@ -479,12 +575,17 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  min-width: 100px;
+  width: 100%;
   border-color: #6B4C93;
   color: #6B4C93;
 
+  @media (min-width: 640px) {
+    width: auto;
+    min-width: 100px;
+  }
+
   &:hover {
-    background: #F5E6FF;
+    background: #5a3f7a;
     border-color: #6B4C93;
   }
 }
