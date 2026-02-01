@@ -52,6 +52,12 @@ export default function TherapistSignupPage() {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       
+      console.log(`File selected for ${fieldName}:`, {
+        name: file.name,
+        size: file.size,
+        type: file.type
+      });
+      
       // Validate file type
       const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
       if (!validTypes.includes(file.type)) {
@@ -73,7 +79,10 @@ export default function TherapistSignupPage() {
         ...formData,
         [fieldName]: file,
       });
+      console.log(`File set in formData for ${fieldName}:`, file.name);
       setError(null);
+    } else {
+      console.log(`No file selected for ${fieldName}`);
     }
   };
 
@@ -111,66 +120,51 @@ export default function TherapistSignupPage() {
     setError(null);
 
     try {
-      // Upload files first
-      let certificateImagePath = "";
-      let degreeImagePath = "";
-
-      if (formData.certificateImage) {
-        try {
-          certificateImagePath = await api.uploadFile(formData.certificateImage, "serenify/certificates");
-        } catch (uploadError) {
-          const uploadErr = uploadError as ApiError;
-          setError(`Failed to upload certificate: ${uploadErr.message}`);
-          setIsLoading(false);
-          return;
-        }
-      }
-
-      if (formData.degreeImage) {
-        try {
-          degreeImagePath = await api.uploadFile(formData.degreeImage, "serenify/degrees");
-        } catch (uploadError) {
-          const uploadErr = uploadError as ApiError;
-          setError(`Failed to upload degree: ${uploadErr.message}`);
-          setIsLoading(false);
-          return;
-        }
-      }
-
-      // Validate that required files are uploaded
-      if (!certificateImagePath) {
-        setError("Please upload your certificate/license image");
+      // Validate files are selected
+      if (!formData.certificateImage) {
+        setError("Please select your certificate/license image");
         setIsLoading(false);
         return;
       }
 
-      if (!degreeImagePath) {
-        setError("Please upload your degree image");
+      if (!formData.degreeImage) {
+        setError("Please select your degree image");
         setIsLoading(false);
         return;
       }
 
-      // Submit signup data with file URLs
-      const signupData = {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        license_number: formData.licenseNumber,
-        license_state: formData.licenseState,
-        years_of_experience: parseInt(formData.yearsOfExperience) || 0,
-        specialization: formData.specialization,
-        phone: formData.phone,
-        college_degree: formData.collegeDegree,
-        masters_institution: formData.mastersInstitution,
-        psychologist_type: formData.psychologistType,
-        successful_cases: parseInt(formData.successfulCases) || 0,
-        dsm_awareness: formData.dsmAwareness,
-        therapy_types: formData.therapyTypes,
-        certificate_image_path: certificateImagePath,
-        degree_image_path: degreeImagePath,
-      };
+      // Create FormData with ALL fields and BOTH files in ONE request
+      const multipartFormData = new FormData();
+      
+      // Append form fields
+      multipartFormData.append('name', formData.name);
+      multipartFormData.append('email', formData.email);
+      multipartFormData.append('password', formData.password);
+      multipartFormData.append('license_number', formData.licenseNumber);
+      multipartFormData.append('license_state', formData.licenseState);
+      multipartFormData.append('years_of_experience', formData.yearsOfExperience);
+      multipartFormData.append('phone', formData.phone);
+      multipartFormData.append('college_degree', formData.collegeDegree);
+      multipartFormData.append('masters_institution', formData.mastersInstitution);
+      multipartFormData.append('psychologist_type', formData.psychologistType);
+      multipartFormData.append('successful_cases', formData.successfulCases);
+      multipartFormData.append('dsm_awareness', formData.dsmAwareness);
+      multipartFormData.append('therapy_types', formData.therapyTypes);
+      
+      if (formData.specialization) {
+        multipartFormData.append('specialization', formData.specialization);
+      }
 
-      const response = await api.therapistSignup(signupData);
+      // Append BOTH files with DIFFERENT keys (this is critical!)
+      multipartFormData.append('certificate_image', formData.certificateImage);
+      multipartFormData.append('degree_image', formData.degreeImage);
+
+      console.log('Submitting therapist signup with multipart form data:');
+      console.log('  Certificate file:', formData.certificateImage.name, formData.certificateImage.size, 'bytes');
+      console.log('  Degree file:', formData.degreeImage.name, formData.degreeImage.size, 'bytes');
+
+      // Send everything in ONE request
+      const response = await api.therapistSignup(multipartFormData);
       if (response.success) {
         // Store therapist data in localStorage
         localStorage.setItem("therapist", JSON.stringify(response.user));
