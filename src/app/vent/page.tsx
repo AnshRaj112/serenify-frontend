@@ -1,16 +1,20 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "../components/ui/button";
 import { Heart, Send, MessageSquare, X, LogIn, UserPlus, LogOut } from "lucide-react";
 import { api, ApiError, Vent } from "../lib/api";
 import styles from "./Vent.module.scss";
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
 export default function VentPage() {
-  const router = useRouter();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [message, setMessage] = useState("");
   const [vents, setVents] = useState<Vent[]>([]);
@@ -107,13 +111,13 @@ export default function VentPage() {
     if (isLoggedIn && user?.id) {
       loadVents(0, true);
     }
-  }, [isLoggedIn, user?.id]);
+  }, [isLoggedIn, user?.id, loadVents]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const loadVents = async (skipValue: number, isInitial: boolean = false) => {
+  const loadVents = useCallback(async (skipValue: number, isInitial: boolean = false) => {
     if (!isLoggedIn || !user?.id) return;
 
     try {
@@ -155,12 +159,13 @@ export default function VentPage() {
       setIsLoading(false);
       setIsLoadingMore(false);
     }
-  };
+  }, [isLoggedIn, user?.id]);
 
   // Intersection Observer for infinite scroll (load more when scrolling up)
   useEffect(() => {
     if (!isLoggedIn || !hasMore || isLoadingMore) return;
 
+    const currentRef = loadingMoreRef.current;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasMore && !isLoadingMore) {
@@ -170,16 +175,16 @@ export default function VentPage() {
       { threshold: 0.1 }
     );
 
-    if (loadingMoreRef.current) {
-      observer.observe(loadingMoreRef.current);
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (loadingMoreRef.current) {
-        observer.unobserve(loadingMoreRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
-  }, [hasMore, isLoadingMore, skip, isLoggedIn]);
+  }, [hasMore, isLoadingMore, skip, isLoggedIn, loadVents]);
 
   // Also handle scroll to top for loading more
   useEffect(() => {
@@ -197,7 +202,7 @@ export default function VentPage() {
 
     messagesArea.addEventListener("scroll", handleScroll);
     return () => messagesArea.removeEventListener("scroll", handleScroll);
-  }, [hasMore, isLoadingMore, skip, isLoggedIn]);
+  }, [hasMore, isLoadingMore, skip, isLoggedIn, loadVents]);
 
   const handleSend = async () => {
     if (!message.trim()) return;
