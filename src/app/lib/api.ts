@@ -80,6 +80,25 @@ export interface TherapistStatusResponse {
   message: string;
 }
 
+export interface Vent {
+  id: string;
+  message: string;
+  created_at: string;
+  user_id?: string;
+}
+
+export interface CreateVentData {
+  message: string;
+  user_id?: string;
+}
+
+export interface GetVentsResponse {
+  success: boolean;
+  vents: Vent[];
+  has_more: boolean;
+  total: number;
+}
+
 async function apiRequest<T>(
   endpoint: string,
   options: RequestInit = {}
@@ -275,6 +294,70 @@ export const api = {
       throw { message: data.message || `HTTP error! status: ${response.status}`, status: response.status } as ApiError;
     }
     return data;
+  },
+
+  // Vent routes
+  createVent: async (data: CreateVentData) => {
+    const response = await fetch(`${API_BASE_URL}/api/vent`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    
+    let responseData;
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      try {
+        responseData = await response.json();
+      } catch (e) {
+        const text = await response.text();
+        throw { message: `Invalid JSON response: ${text.substring(0, 100)}`, status: response.status } as ApiError;
+      }
+    } else {
+      const text = await response.text();
+      throw { message: text || `HTTP error! status: ${response.status}`, status: response.status } as ApiError;
+    }
+    
+    if (!response.ok) {
+      throw { message: responseData.message || `HTTP error! status: ${response.status}`, status: response.status } as ApiError;
+    }
+    return responseData;
+  },
+
+  getVents: async (userId?: string, limit?: number, skip?: number): Promise<GetVentsResponse> => {
+    const params = new URLSearchParams();
+    if (userId) params.append('user_id', userId);
+    if (limit) params.append('limit', limit.toString());
+    if (skip) params.append('skip', skip.toString());
+    
+    const url = `${API_BASE_URL}/api/vent${params.toString() ? `?${params.toString()}` : ''}`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    let data;
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      try {
+        data = await response.json();
+      } catch (e) {
+        const text = await response.text();
+        throw { message: `Invalid JSON response: ${text.substring(0, 100)}`, status: response.status } as ApiError;
+      }
+    } else {
+      const text = await response.text();
+      throw { message: text || `HTTP error! status: ${response.status}`, status: response.status } as ApiError;
+    }
+    
+    if (!response.ok) {
+      throw { message: data.message || `HTTP error! status: ${response.status}`, status: response.status } as ApiError;
+    }
+    return data as GetVentsResponse;
   },
 };
 
