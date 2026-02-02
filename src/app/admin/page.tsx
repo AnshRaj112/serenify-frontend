@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
-import { Shield, CheckCircle, XCircle, Eye, Download, User, Mail, Phone, GraduationCap, Award, FileText } from "lucide-react";
+import { Shield, CheckCircle, XCircle, Eye, Download, User, Mail, Phone, GraduationCap, Award, FileText, Ban, Unlock, AlertTriangle } from "lucide-react";
 import styles from "./Admin.module.scss";
 
 interface Therapist {
@@ -32,13 +32,18 @@ import { api } from "../lib/api";
 export default function AdminDashboard() {
   const [pendingTherapists, setPendingTherapists] = useState<Therapist[]>([]);
   const [approvedTherapists, setApprovedTherapists] = useState<Therapist[]>([]);
+  const [blockedIPs, setBlockedIPs] = useState<any[]>([]);
   const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"pending" | "approved">("pending");
+  const [isLoadingIPs, setIsLoadingIPs] = useState(false);
+  const [activeTab, setActiveTab] = useState<"pending" | "approved" | "blocked">("pending");
 
   useEffect(() => {
     fetchTherapists();
-  }, []);
+    if (activeTab === "blocked") {
+      fetchBlockedIPs();
+    }
+  }, [activeTab]);
 
   const fetchTherapists = async () => {
     setIsLoading(true);
@@ -58,6 +63,38 @@ export default function AdminDashboard() {
       console.error("Error fetching therapists:", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fetchBlockedIPs = async () => {
+    setIsLoadingIPs(true);
+    try {
+      const data = await api.getBlockedIPs();
+      if (data.success) {
+        setBlockedIPs(data.blocked_ips || []);
+      }
+    } catch (error) {
+      console.error("Error fetching blocked IPs:", error);
+      alert("Failed to fetch blocked IPs");
+    } finally {
+      setIsLoadingIPs(false);
+    }
+  };
+
+  const handleUnblock = async (ipAddress: string) => {
+    if (!confirm(`Are you sure you want to unblock IP address ${ipAddress}?`)) return;
+
+    try {
+      const data = await api.unblockIP(ipAddress);
+      if (data.success) {
+        alert(`IP address ${ipAddress} has been unblocked successfully`);
+        fetchBlockedIPs();
+      } else {
+        alert("Failed to unblock IP address");
+      }
+    } catch (error: any) {
+      console.error("Error unblocking IP:", error);
+      alert(error.message || "Failed to unblock IP address");
     }
   };
 
@@ -97,7 +134,7 @@ export default function AdminDashboard() {
     }
   };
 
-  const therapists = activeTab === "pending" ? pendingTherapists : approvedTherapists;
+  const therapists = activeTab === "pending" ? pendingTherapists : activeTab === "approved" ? approvedTherapists : [];
 
   return (
     <div className={styles.adminDashboard}>
@@ -122,9 +159,71 @@ export default function AdminDashboard() {
           >
             Approved Therapists ({approvedTherapists.length})
           </button>
+          <button
+            className={`${styles.tab} ${activeTab === "blocked" ? styles.active : ""}`}
+            onClick={() => setActiveTab("blocked")}
+          >
+            <Ban className={styles.tabIcon} />
+            Blocked IPs ({blockedIPs.length})
+          </button>
         </div>
 
-        {isLoading ? (
+        {activeTab === "blocked" ? (
+          isLoadingIPs ? (
+            <div className={styles.loading}>Loading blocked IPs...</div>
+          ) : blockedIPs.length === 0 ? (
+            <div className={styles.emptyState}>
+              <Ban className={styles.emptyIcon} />
+              <p>No blocked IP addresses found.</p>
+            </div>
+          ) : (
+            <div className={styles.blockedIPsGrid}>
+              {blockedIPs.map((blocked) => (
+                <Card key={blocked.id} className={styles.blockedIPCard}>
+                  <CardHeader>
+                    <CardTitle className={styles.cardTitle}>
+                      <Ban className={styles.icon} />
+                      {blocked.ip_address}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className={styles.info}>
+                      <div className={styles.infoItem}>
+                        <AlertTriangle className={styles.infoIcon} />
+                        <span><strong>Reason:</strong> {blocked.reason}</span>
+                      </div>
+                      <div className={styles.infoItem}>
+                        <span className={styles.label}>Blocked At:</span>
+                        <span>{new Date(blocked.created_at).toLocaleString()}</span>
+                      </div>
+                      <div className={styles.infoItem}>
+                        <span className={styles.label}>Expires At:</span>
+                        <span>{new Date(blocked.expires_at).toLocaleString()}</span>
+                      </div>
+                      <div className={styles.infoItem}>
+                        <span className={styles.label}>Status:</span>
+                        <span className={blocked.is_active ? styles.activeBadge : styles.inactiveBadge}>
+                          {blocked.is_active ? "Active" : "Inactive"}
+                        </span>
+                      </div>
+                    </div>
+                    <div className={styles.actions}>
+                      <Button
+                        variant="default"
+                        onClick={() => handleUnblock(blocked.ip_address)}
+                        className={styles.unblockButton}
+                        disabled={!blocked.is_active}
+                      >
+                        <Unlock className={styles.buttonIcon} />
+                        Unblock IP
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )
+        ) : isLoading ? (
           <div className={styles.loading}>Loading therapists...</div>
         ) : therapists.length === 0 ? (
           <div className={styles.emptyState}>

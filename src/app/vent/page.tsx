@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { Button } from "../components/ui/button";
 import { Heart, Send, MessageSquare, X, LogIn, UserPlus, LogOut } from "lucide-react";
-import { api, ApiError, Vent } from "../lib/api";
+import { api, ApiError, Vent, CreateVentResponse } from "../lib/api";
 import styles from "./Vent.module.scss";
 
 interface User {
@@ -22,6 +22,8 @@ export default function VentPage() {
   const [isSending, setIsSending] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showAuthPrompt, setShowAuthPrompt] = useState(false);
+  const [warningMessage, setWarningMessage] = useState<string | null>(null);
+  const [isBlocked, setIsBlocked] = useState(false);
   const [hasMore, setHasMore] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [skip, setSkip] = useState(0);
@@ -221,8 +223,28 @@ export default function VentPage() {
       const response = await api.createVent({
         message: messageText,
         user_id: user?.id,
-      });
+      }) as CreateVentResponse;
 
+      // Check if blocked
+      if (response.blocked) {
+        setIsBlocked(true);
+        setWarningMessage(response.message || "Your access has been temporarily restricted.");
+        setMessage(""); // Clear message
+        return;
+      }
+
+      // Check if warning
+      if (response.warning) {
+        setWarningMessage(response.message || "Your message contains content that may violate our community guidelines.");
+        setMessage(messageText); // Restore message so user can edit
+        // Show warning for 5 seconds
+        setTimeout(() => {
+          setWarningMessage(null);
+        }, 5000);
+        return;
+      }
+
+      // Success - message was created
       if (response.success && response.vent) {
         const newVent: Vent = {
           id: response.vent.id,
@@ -232,32 +254,86 @@ export default function VentPage() {
         };
         // Add new message at the end (newest at bottom)
         setVents((prev) => [...prev, newVent]);
+        setWarningMessage(null); // Clear any previous warnings
       }
     } catch (err) {
       const apiError = err as ApiError;
       console.error("Error sending vent:", apiError);
-      alert(apiError.message || "Failed to send message. Please try again.");
-      setMessage(messageText); // Restore message on error
+      
+      // Check if it's a blocked response
+      if (apiError.status === 403) {
+        setIsBlocked(true);
+        setWarningMessage(apiError.message || "Your access has been temporarily restricted.");
+      } else {
+        setWarningMessage(apiError.message || "Failed to send message. Please try again.");
+        setMessage(messageText); // Restore message on error
+      }
     } finally {
       setIsSending(false);
     }
   };
 
-  const handleSendAsGuest = () => {
+  const handleSendAsGuest = async () => {
     if (!message.trim()) return;
 
-    const newVent: Vent = {
-      id: `guest_${Date.now()}`,
-      message: message,
-      created_at: new Date().toISOString(),
-    };
-
-    const updatedVents = [newVent, ...vents];
-    setVents(updatedVents);
+    setIsSending(true);
+    const messageText = message;
     setMessage("");
 
-    // Save to sessionStorage
-    sessionStorage.setItem("vent_messages", JSON.stringify(updatedVents));
+    try {
+      // Send to backend for moderation check (even as guest)
+      const response = await api.createVent({
+        message: messageText,
+        // No user_id for guests
+      }) as CreateVentResponse;
+
+      // Check if blocked
+      if (response.blocked) {
+        setIsBlocked(true);
+        setWarningMessage(response.message || "Your access has been temporarily restricted.");
+        return;
+      }
+
+      // Check if warning
+      if (response.warning) {
+        setWarningMessage(response.message || "Your message contains content that may violate our community guidelines.");
+        setMessage(messageText); // Restore message so user can edit
+        // Show warning for 5 seconds
+        setTimeout(() => {
+          setWarningMessage(null);
+        }, 5000);
+        return;
+      }
+
+      // Success - message passed moderation (but won't be saved for guests)
+      // Only add to local state for guests
+      const newVent: Vent = {
+        id: `guest_${Date.now()}`,
+        message: messageText,
+        created_at: new Date().toISOString(),
+      };
+
+      const updatedVents = [newVent, ...vents];
+      setVents(updatedVents);
+      setWarningMessage(null); // Clear any previous warnings
+
+      // Save to sessionStorage
+      sessionStorage.setItem("vent_messages", JSON.stringify(updatedVents));
+    } catch (err) {
+      const apiError = err as ApiError;
+      console.error("Error sending vent:", apiError);
+      
+      // Check if it's a blocked response
+      if (apiError.status === 403) {
+        setIsBlocked(true);
+        setWarningMessage(apiError.message || "Your access has been temporarily restricted.");
+      } else {
+        setWarningMessage(apiError.message || "Failed to send message. Please try again.");
+        setMessage(messageText); // Restore message on error
+      }
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -316,6 +392,30 @@ export default function VentPage() {
             This is your safe space. Express yourself freely, without judgment.
             {!isLoggedIn && " Your messages will be cleared when you close this window."}
           </p>
+          
+          {warningMessage && (
+            <div className={`${styles.warningBanner} ${isBlocked ? styles.blockedBanner : ''}`}>
+              <p>{warningMessage}</p>
+              {!isBlocked && (
+                <button
+                  className={styles.closeWarningButton}
+                  onClick={() => setWarningMessage(null)}
+                  aria-label="Close warning"
+                >
+                  <X className={styles.closeIcon} />
+                </button>
+              )}
+            </div>
+          )}
+          
+          {isBlocked && (
+            <div className={styles.blockedMessage}>
+              <p>
+                Your access has been temporarily restricted due to policy violations. 
+                If you need help or believe this is an error, please contact support.
+              </p>
+            </div>
+          )}
         </div>
 
         <div className={styles.chatContainer} ref={chatContainerRef}>
@@ -357,10 +457,11 @@ export default function VentPage() {
               onChange={(e) => setMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               rows={3}
+              disabled={isBlocked}
             />
             <Button
               onClick={isLoggedIn ? handleSend : handleSendAsGuest}
-              disabled={!message.trim() || isSending}
+              disabled={!message.trim() || isSending || isBlocked}
               variant="healing"
               className={styles.sendButton}
             >

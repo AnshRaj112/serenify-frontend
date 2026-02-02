@@ -92,6 +92,15 @@ export interface CreateVentData {
   user_id?: string;
 }
 
+export interface CreateVentResponse {
+  success: boolean;
+  message: string;
+  vent?: Vent;
+  warning?: boolean;
+  blocked?: boolean;
+  warning_count?: number;
+}
+
 export interface GetVentsResponse {
   success: boolean;
   vents: Vent[];
@@ -256,6 +265,38 @@ export const api = {
   },
 
   // Admin routes
+  getViolations: async () => {
+    const response = await fetch(`${API_BASE_URL}/api/admin/violations`);
+    const data = await response.json();
+    if (!response.ok) {
+      throw { message: data.message || `HTTP error! status: ${response.status}`, status: response.status } as ApiError;
+    }
+    return data;
+  },
+
+  getBlockedIPs: async () => {
+    const response = await fetch(`${API_BASE_URL}/api/admin/blocked-ips`);
+    const data = await response.json();
+    if (!response.ok) {
+      throw { message: data.message || `HTTP error! status: ${response.status}`, status: response.status } as ApiError;
+    }
+    return data;
+  },
+
+  unblockIP: async (ipAddress: string) => {
+    const response = await fetch(`${API_BASE_URL}/api/admin/unblock-ip?ip=${encodeURIComponent(ipAddress)}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw { message: data.message || `HTTP error! status: ${response.status}`, status: response.status } as ApiError;
+    }
+    return data;
+  },
+
   getPendingTherapists: async () => {
     const response = await fetch(`${API_BASE_URL}/api/admin/therapists/pending`);
     const data = await response.json();
@@ -320,10 +361,9 @@ export const api = {
       throw { message: text || `HTTP error! status: ${response.status}`, status: response.status } as ApiError;
     }
     
-    if (!response.ok) {
-      throw { message: responseData.message || `HTTP error! status: ${response.status}`, status: response.status } as ApiError;
-    }
-    return responseData;
+    // Return response even if not ok (for warnings and blocks)
+    // The frontend will handle warnings and blocks appropriately
+    return responseData as CreateVentResponse;
   },
 
   getVents: async (userId?: string, limit?: number, skip?: number): Promise<GetVentsResponse> => {
