@@ -106,13 +106,6 @@ export default function VentPage() {
     }
   }, []);
 
-  // Load initial vents for logged-in users
-  useEffect(() => {
-    if (isLoggedIn && user?.id) {
-      loadVents(0, true);
-    }
-  }, [isLoggedIn, user?.id, loadVents]);
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -160,6 +153,13 @@ export default function VentPage() {
       setIsLoadingMore(false);
     }
   }, [isLoggedIn, user?.id]);
+
+  // Load initial vents for logged-in users
+  useEffect(() => {
+    if (isLoggedIn && user?.id) {
+      loadVents(0, true);
+    }
+  }, [isLoggedIn, user?.id, loadVents]);
 
   // Intersection Observer for infinite scroll (load more when scrolling up)
   useEffect(() => {
