@@ -27,12 +27,21 @@ interface Therapist {
   is_approved: boolean;
 }
 
+interface BlockedIP {
+  id: string;
+  ip_address: string;
+  reason: string;
+  created_at: string;
+  expires_at: string;
+  is_active: boolean;
+}
+
 import { api } from "../lib/api";
 
 export default function AdminDashboard() {
   const [pendingTherapists, setPendingTherapists] = useState<Therapist[]>([]);
   const [approvedTherapists, setApprovedTherapists] = useState<Therapist[]>([]);
-  const [blockedIPs, setBlockedIPs] = useState<any[]>([]);
+  const [blockedIPs, setBlockedIPs] = useState<BlockedIP[]>([]);
   const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingIPs, setIsLoadingIPs] = useState(false);
@@ -92,9 +101,10 @@ export default function AdminDashboard() {
       } else {
         alert("Failed to unblock IP address");
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error unblocking IP:", error);
-      alert(error.message || "Failed to unblock IP address");
+      const errorMessage = error instanceof Error ? error.message : "Failed to unblock IP address";
+      alert(errorMessage);
     }
   };
 
