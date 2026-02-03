@@ -368,7 +368,7 @@ export default function VentPage() {
               <div className={styles.logoIcon}>
                 <Heart className={styles.heartIcon} />
               </div>
-              <h1 className={styles.brandName}>Serenify</h1>
+              <h1 className={styles.brandName}>Salvioris</h1>
             </div>
             {isLoggedIn && (
               <div className={styles.userSection}>

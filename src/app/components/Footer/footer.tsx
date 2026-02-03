@@ -47,7 +47,7 @@ export function Footer() {
                 <Heart className="w-5 h-5 text-primary-foreground" />
               </div>
               <span className="font-display font-semibold text-xl text-foreground">
-                MindBridge
+                Salvioris
               </span>
             </div>
             
@@ -60,11 +60,11 @@ export function Footer() {
             <div className="space-y-2 text-sm">
               <div className="flex items-center space-x-2 text-muted-foreground">
                 <Phone className="w-4 h-4" />
-                <span>1-800-MINDBRIDGE</span>
+                <span>1-800-Salvioris</span>
               </div>
               <div className="flex items-center space-x-2 text-muted-foreground">
                 <Mail className="w-4 h-4" />
-                <span>support@mindbridge.com</span>
+                <span>support@salvioris.com</span>
               </div>
               <div className="flex items-center space-x-2 text-muted-foreground">
                 <MapPin className="w-4 h-4" />
@@ -127,7 +127,7 @@ export function Footer() {
         <div className="border-t border-border pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-muted-foreground mb-4 md:mb-0">
-              <p>© {new Date().getFullYear()} MindBridge. All rights reserved.</p>
+              <p>© {new Date().getFullYear()} Salvioris. All rights reserved.</p>
               <p className="mt-1">
                 Licensed mental health professionals. HIPAA compliant platform.
               </p>

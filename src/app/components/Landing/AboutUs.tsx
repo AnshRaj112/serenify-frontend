@@ -39,7 +39,7 @@ import {
        <span className={styles.titleHighlight}> Mental Wellness</span>
      </h2>
      <p className={styles.description}>
-       At MindBridge, we believe everyone deserves access to quality mental healthcare. 
+       At Salvioris, we believe everyone deserves access to quality mental healthcare. 
        Our platform connects you with licensed professionals in a secure, judgement-free 
        environment designed for healing and growth.
      </p>

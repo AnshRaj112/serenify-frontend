@@ -61,7 +61,7 @@ export default function TherapistPendingPage() {
               <div className={styles.logoIcon}>
                 <Heart className={styles.heartIcon} />
               </div>
-              <h1 className={styles.brandName}>Serenify</h1>
+              <h1 className={styles.brandName}>Salvioris</h1>
             </div>
           </div>
 
