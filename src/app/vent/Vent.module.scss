@@ -456,6 +456,13 @@
   overflow: hidden;
 }
 
+.encouragementModalContent {
+  max-width: 600px;
+  background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--card) / 0.98) 100%);
+  border: 2px solid hsl(var(--primary) / 0.2);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4), 0 0 40px hsl(var(--primary) / 0.1);
+}
+
 @keyframes modalFadeIn {
   from {
     opacity: 0;
@@ -539,6 +546,136 @@
   @media (min-width: 640px) {
     width: auto;
     min-width: 140px;
+  }
+}
+
+// Encouragement Modal Styles
+.encouragementHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem 1rem;
+  border-bottom: 1px solid hsl(var(--border));
+  position: relative;
+  background: linear-gradient(135deg, hsl(var(--primary) / 0.05) 0%, hsl(var(--primary) / 0.02) 100%);
+}
+
+.heartIconWrapper {
+  width: 4rem;
+  height: 4rem;
+  background: linear-gradient(135deg, hsl(var(--primary) / 0.15) 0%, hsl(var(--primary) / 0.1) 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  animation: heartbeat 2s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.encouragementHeart {
+  width: 2rem;
+  height: 2rem;
+  color: hsl(var(--primary));
+  fill: hsl(var(--primary) / 0.3);
+}
+
+.encouragementTitle {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  text-align: center;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  @media (min-width: 640px) {
+    font-size: 1.75rem;
+  }
+}
+
+.encouragementHeader .closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.encouragementBody {
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.encouragementText {
+  color: hsl(var(--foreground));
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+  font-size: 1rem;
+  text-align: left;
+
+  strong {
+    color: hsl(var(--primary));
+    font-weight: 600;
+  }
+
+  @media (min-width: 640px) {
+    font-size: 1.0625rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &:last-of-type {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.encouragementFooter {
+  margin: 2rem 0 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid hsl(var(--border) / 0.5);
+}
+
+.encouragementClosing {
+  color: hsl(var(--muted-foreground));
+  line-height: 1.8;
+  font-size: 0.9375rem;
+  font-style: italic;
+  text-align: center;
+
+  strong {
+    color: hsl(var(--primary));
+    font-weight: 600;
+    font-style: normal;
+  }
+}
+
+.encouragementButton {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.875rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background: var(--gradient-primary);
+  border: none;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px hsl(var(--primary) / 0.3);
+  }
+
+  @media (min-width: 640px) {
+    width: auto;
+    min-width: 200px;
   }
 }
 

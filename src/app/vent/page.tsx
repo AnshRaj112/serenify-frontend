@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { Button } from "../components/ui/button";
-import { Send, MessageSquare, X, LogIn, UserPlus, LogOut } from "lucide-react";
+import { Send, MessageSquare, X, LogIn, UserPlus, LogOut, Heart } from "lucide-react";
 import Image from "next/image";
 import salviorisLogo from "../../assets/salvioris.jpg";
 import { api, ApiError, Vent, CreateVentResponse } from "../lib/api";
@@ -29,10 +29,12 @@ export default function VentPage() {
   const [hasMore, setHasMore] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [skip, setSkip] = useState(0);
+  const [showEncouragementModal, setShowEncouragementModal] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const loadingMoreRef = useRef<HTMLDivElement>(null);
   const messagesAreaRef = useRef<HTMLDivElement>(null);
+  const recentMessageTimesRef = useRef<number[]>([]);
 
   // Calculate how many messages fit on screen (estimate: ~100px per message)
   const calculateInitialChunkSize = () => {
@@ -208,6 +210,32 @@ export default function VentPage() {
     return () => messagesArea.removeEventListener("scroll", handleScroll);
   }, [hasMore, isLoadingMore, skip, isLoggedIn, loadVents]);
 
+  const checkAndShowEncouragement = (messageText: string) => {
+    const now = Date.now();
+    const LONG_MESSAGE_THRESHOLD = 500; // characters
+    const CONTINUOUS_MESSAGE_WINDOW = 30000; // 30 seconds
+    const CONTINUOUS_MESSAGE_COUNT = 3; // 3 messages
+
+    // Check for long message
+    const isLongMessage = messageText.length > LONG_MESSAGE_THRESHOLD;
+
+    // Check for continuous messages
+    // Remove timestamps older than the window
+    recentMessageTimesRef.current = recentMessageTimesRef.current.filter(
+      (time) => now - time < CONTINUOUS_MESSAGE_WINDOW
+    );
+    
+    // Add current message time
+    recentMessageTimesRef.current.push(now);
+    
+    const isContinuousMessaging = recentMessageTimesRef.current.length >= CONTINUOUS_MESSAGE_COUNT;
+
+    // Show encouragement if either condition is met
+    if (isLongMessage || isContinuousMessaging) {
+      setShowEncouragementModal(true);
+    }
+  };
+
   const handleSend = async () => {
     if (!message.trim()) return;
 
@@ -220,6 +248,9 @@ export default function VentPage() {
     setIsSending(true);
     const messageText = message;
     setMessage("");
+
+    // Check if we should show encouragement
+    checkAndShowEncouragement(messageText);
 
     try {
       const response = await api.createVent({
@@ -281,6 +312,9 @@ export default function VentPage() {
     setIsSending(true);
     const messageText = message;
     setMessage("");
+
+    // Check if we should show encouragement
+    checkAndShowEncouragement(messageText);
 
     try {
       // Send to backend for moderation check (even as guest)
@@ -569,6 +603,55 @@ export default function VentPage() {
                   Continue as Guest
                 </Button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Encouragement Modal */}
+      {showEncouragementModal && (
+        <div className={styles.modal} onClick={() => setShowEncouragementModal(false)}>
+          <div className={`${styles.modalContent} ${styles.encouragementModalContent}`} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.encouragementHeader}>
+              <div className={styles.heartIconWrapper}>
+                <Heart className={styles.encouragementHeart} />
+              </div>
+              <h3 className={styles.encouragementTitle}>You Are Heard & Supported</h3>
+              <button
+                className={styles.closeButton}
+                onClick={() => setShowEncouragementModal(false)}
+                aria-label="Close"
+              >
+                <X className={styles.closeIcon} />
+              </button>
+            </div>
+            <div className={styles.encouragementBody}>
+              <p className={styles.encouragementText}>
+                We see you pouring your heart out, and we want you to know that <strong>you are heard</strong>. 
+                This is your safe space—a place where you can express yourself freely, without judgment, 
+                without fear, and without reservation.
+              </p>
+              <p className={styles.encouragementText}>
+                Every word you share matters. Every feeling you express is valid. This is a judgment-free zone 
+                where you can vent, process, and release whatever is weighing on your heart.
+              </p>
+              <p className={styles.encouragementText}>
+                Take your time. Write as much as you need. Send as many messages as you want. We&apos;re here 
+                to listen, to support, and to remind you that you&apos;re not alone in this journey.
+              </p>
+              <div className={styles.encouragementFooter}>
+                <p className={styles.encouragementClosing}>
+                  With love and understanding,<br />
+                  <strong>The Salvioris Team</strong>
+                </p>
+              </div>
+              <Button
+                variant="healing"
+                className={styles.encouragementButton}
+                onClick={() => setShowEncouragementModal(false)}
+              >
+                Continue Venting
+              </Button>
             </div>
           </div>
         </div>
