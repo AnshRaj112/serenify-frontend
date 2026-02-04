@@ -3,7 +3,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { Button } from "../components/ui/button";
-import { Heart, Send, MessageSquare, X, LogIn, UserPlus, LogOut } from "lucide-react";
+import { Send, MessageSquare, X, LogIn, UserPlus, LogOut } from "lucide-react";
+import Image from "next/image";
+import salviorisLogo from "../../assets/salvioris.jpg";
 import { api, ApiError, Vent, CreateVentResponse } from "../lib/api";
 import styles from "./Vent.module.scss";
 
@@ -366,7 +368,13 @@ export default function VentPage() {
           <div className={styles.headerTop}>
             <div className={styles.logoWrapper}>
               <div className={styles.logoIcon}>
-                <Heart className={styles.heartIcon} />
+                <Image 
+                  src={salviorisLogo} 
+                  alt="Salvioris Logo" 
+                  width={48} 
+                  height={48}
+                  className={styles.logoImage}
+                />
               </div>
               <h1 className={styles.brandName}>Salvioris</h1>
             </div>

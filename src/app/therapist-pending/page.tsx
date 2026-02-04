@@ -5,7 +5,9 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
-import { Heart, Clock, CheckCircle, Mail, ArrowLeft } from "lucide-react";
+import { Clock, CheckCircle, Mail, ArrowLeft } from "lucide-react";
+import Image from "next/image";
+import salviorisLogo from "../../assets/salvioris.jpg";
 import { api, Therapist } from "../lib/api";
 import styles from "./TherapistPending.module.scss";
 
@@ -59,7 +61,13 @@ export default function TherapistPendingPage() {
           <div className={styles.header}>
             <div className={styles.logoWrapper}>
               <div className={styles.logoIcon}>
-                <Heart className={styles.heartIcon} />
+                <Image 
+                  src={salviorisLogo} 
+                  alt="Salvioris Logo" 
+                  width={48} 
+                  height={48}
+                  className={styles.logoImage}
+                />
               </div>
               <h1 className={styles.brandName}>Salvioris</h1>
             </div>

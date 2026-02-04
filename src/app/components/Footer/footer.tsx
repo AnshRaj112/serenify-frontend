@@ -1,4 +1,6 @@
-import { Heart, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+import Image from "next/image";
+import salviorisLogo from "../../../assets/salvioris.jpg";
 
 export function Footer() {
   const footerLinks = {
@@ -43,8 +45,14 @@ export function Footer() {
           {/* Brand Section */}
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-                <Heart className="w-5 h-5 text-primary-foreground" />
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden">
+                <Image 
+                  src={salviorisLogo} 
+                  alt="Salvioris Logo" 
+                  width={32} 
+                  height={32}
+                  className="object-contain"
+                />
               </div>
               <span className="font-display font-semibold text-xl text-foreground">
                 Salvioris

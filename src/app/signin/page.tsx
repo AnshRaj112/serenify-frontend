@@ -6,7 +6,9 @@ import Link from "next/link";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Heart, ArrowRight, Shield, Users, Sparkles, LogIn, Eye, EyeOff } from "lucide-react";
+import { ArrowRight, Shield, Users, Sparkles, LogIn, Eye, EyeOff } from "lucide-react";
+import Image from "next/image";
+import salviorisLogo from "../../assets/salvioris.jpg";
 import { api, ApiError } from "../lib/api";
 import styles from "./Signin.module.scss";
 
@@ -59,7 +61,13 @@ export default function SigninPage() {
             <div className={styles.storyContent}>
               <div className={styles.logoWrapper}>
                 <div className={styles.logoIcon}>
-                  <Heart className={styles.heartIcon} />
+                  <Image 
+                    src={salviorisLogo} 
+                    alt="Salvioris Logo" 
+                    width={48} 
+                    height={48}
+                    className={styles.logoImage}
+                  />
                 </div>
                 <h1 className={styles.brandName}>Salvioris</h1>
               </div>
