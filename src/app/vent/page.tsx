@@ -35,6 +35,7 @@ export default function VentPage() {
   const loadingMoreRef = useRef<HTMLDivElement>(null);
   const messagesAreaRef = useRef<HTMLDivElement>(null);
   const recentMessageTimesRef = useRef<number[]>([]);
+  const encouragementShownRef = useRef<boolean>(false);
 
   // Calculate how many messages fit on screen (estimate: ~100px per message)
   const calculateInitialChunkSize = () => {
@@ -211,10 +212,15 @@ export default function VentPage() {
   }, [hasMore, isLoadingMore, skip, isLoggedIn, loadVents]);
 
   const checkAndShowEncouragement = (messageText: string) => {
+    // Don't show if already shown once
+    if (encouragementShownRef.current) {
+      return;
+    }
+
     const now = Date.now();
     const LONG_MESSAGE_THRESHOLD = 500; // characters
     const CONTINUOUS_MESSAGE_WINDOW = 30000; // 30 seconds
-    const CONTINUOUS_MESSAGE_COUNT = 3; // 3 messages
+    const CONTINUOUS_MESSAGE_COUNT = 5; // 5 messages
 
     // Check for long message
     const isLongMessage = messageText.length > LONG_MESSAGE_THRESHOLD;
@@ -230,8 +236,9 @@ export default function VentPage() {
     
     const isContinuousMessaging = recentMessageTimesRef.current.length >= CONTINUOUS_MESSAGE_COUNT;
 
-    // Show encouragement if either condition is met
-    if (isLongMessage || isContinuousMessaging) {
+    // Show encouragement if either condition is met (only once)
+    if ((isLongMessage || isContinuousMessaging) && !encouragementShownRef.current) {
+      encouragementShownRef.current = true;
       setShowEncouragementModal(true);
     }
   };

@@ -443,6 +443,7 @@
   z-index: 1000;
   padding: 1rem;
   backdrop-filter: blur(4px);
+  overflow-y: auto;
 }
 
 .modalContent {
@@ -450,17 +451,26 @@
   border-radius: 1rem;
   max-width: 500px;
   width: 100%;
+  max-height: calc(100vh - 2rem);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   border: 1px solid hsl(var(--border));
   animation: modalFadeIn 0.3s ease-out;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .encouragementModalContent {
   max-width: 600px;
-  background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--card) / 0.98) 100%);
-  border: 2px solid hsl(var(--primary) / 0.2);
-  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4), 0 0 40px hsl(var(--primary) / 0.1);
+  max-height: calc(100vh - 2rem);
+  background: hsl(var(--card));
+  border: 2px solid rgba(79, 209, 199, 0.2);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4), 0 0 40px rgba(79, 209, 199, 0.1);
+  
+  @media (max-width: 640px) {
+    max-width: calc(100% - 2rem);
+    max-height: calc(100vh - 1rem);
+  }
 }
 
 @keyframes modalFadeIn {
@@ -555,16 +565,21 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem 1.5rem 1rem;
+  padding: 1.5rem 1rem 1rem;
   border-bottom: 1px solid hsl(var(--border));
   position: relative;
-  background: linear-gradient(135deg, hsl(var(--primary) / 0.05) 0%, hsl(var(--primary) / 0.02) 100%);
+  background: transparent;
+  flex-shrink: 0;
+
+  @media (max-width: 640px) {
+    padding: 1rem 0.75rem 0.75rem;
+  }
 }
 
 .heartIconWrapper {
   width: 4rem;
   height: 4rem;
-  background: linear-gradient(135deg, hsl(var(--primary) / 0.15) 0%, hsl(var(--primary) / 0.1) 100%);
+  background: transparent;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -585,20 +600,20 @@
 .encouragementHeart {
   width: 2rem;
   height: 2rem;
-  color: hsl(var(--primary));
-  fill: hsl(var(--primary) / 0.3);
+  color: #4FD1C7;
+  
+  // Ensure it's an outline (not filled)
+  fill: none !important;
+  stroke: #4FD1C7;
+  stroke-width: 2.5;
 }
 
 .encouragementTitle {
   margin: 0;
   font-size: 1.5rem;
   font-weight: 700;
-  color: hsl(var(--foreground));
+  color: #4FD1C7;
   text-align: center;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 
   @media (min-width: 640px) {
     font-size: 1.75rem;
@@ -609,50 +624,70 @@
   position: absolute;
   top: 1rem;
   right: 1rem;
+  color: hsl(var(--muted-foreground));
+  
+  &:hover {
+    background: hsl(var(--muted));
+    color: hsl(var(--foreground));
+  }
 }
 
 .encouragementBody {
-  padding: 2rem 1.5rem;
+  padding: 1.5rem;
   text-align: center;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+
+  @media (max-width: 640px) {
+    padding: 1rem;
+  }
 }
 
 .encouragementText {
-  color: hsl(var(--foreground));
-  line-height: 1.8;
-  margin-bottom: 1.25rem;
-  font-size: 1rem;
+  color: #ffffff;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  font-size: 0.9375rem;
   text-align: left;
 
   strong {
-    color: hsl(var(--primary));
+    color: #4FD1C7;
     font-weight: 600;
   }
 
   @media (min-width: 640px) {
-    font-size: 1.0625rem;
-    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    margin-bottom: 1.25rem;
+    line-height: 1.8;
   }
 
   &:last-of-type {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
 }
 
 .encouragementFooter {
-  margin: 2rem 0 1.5rem;
-  padding-top: 1.5rem;
+  margin: 1.5rem 0 1rem;
+  padding-top: 1rem;
   border-top: 1px solid hsl(var(--border) / 0.5);
+  flex-shrink: 0;
+
+  @media (max-width: 640px) {
+    margin: 1rem 0 0.75rem;
+    padding-top: 0.75rem;
+  }
 }
 
 .encouragementClosing {
-  color: hsl(var(--muted-foreground));
+  color: #ffffff;
   line-height: 1.8;
   font-size: 0.9375rem;
   font-style: italic;
   text-align: center;
 
   strong {
-    color: hsl(var(--primary));
+    color: #4FD1C7;
     font-weight: 600;
     font-style: normal;
   }
@@ -660,22 +695,27 @@
 
 .encouragementButton {
   width: 100%;
-  margin-top: 1.5rem;
-  padding: 0.875rem 2rem;
-  font-size: 1rem;
+  margin-top: 1rem;
+  padding: 0.875rem 1.5rem;
+  font-size: 0.9375rem;
   font-weight: 600;
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, #4FD1C7 0%, #38B2AC 100%);
+  color: #ffffff;
   border: none;
   transition: all 0.3s ease;
+  flex-shrink: 0;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px hsl(var(--primary) / 0.3);
+    box-shadow: 0 8px 20px rgba(79, 209, 199, 0.4);
+    background: linear-gradient(135deg, #5DD5C9 0%, #48C2BC 100%);
   }
 
   @media (min-width: 640px) {
     width: auto;
     min-width: 200px;
+    font-size: 1rem;
+    padding: 0.875rem 2rem;
   }
 }
 
