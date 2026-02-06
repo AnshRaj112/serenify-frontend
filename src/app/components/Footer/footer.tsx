@@ -19,6 +19,7 @@ export function Footer() {
     "Support": [
       { label: "Help Center", href: "/help" },
       { label: "Contact Us", href: "/contact" },
+      { label: "Feedback", href: "/feedback" },
       { label: "FAQ", href: "/faq" },
       { label: "Safety Guidelines", href: "/safety" },
     ],

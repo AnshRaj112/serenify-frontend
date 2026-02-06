@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
-import { Shield, CheckCircle, XCircle, Eye, Download, User, Mail, Phone, GraduationCap, Award, FileText, Ban, Unlock, AlertTriangle } from "lucide-react";
+import { Shield, CheckCircle, XCircle, Eye, Download, User, Mail, Phone, GraduationCap, Award, FileText, Ban, Unlock, AlertTriangle, MessageSquare } from "lucide-react";
 import styles from "./Admin.module.scss";
 
 interface Therapist {
@@ -36,21 +36,32 @@ interface BlockedIP {
   is_active: boolean;
 }
 
+interface Feedback {
+  id: string;
+  feedback: string;
+  created_at: string;
+  ip_address?: string;
+}
+
 import { api } from "../lib/api";
 
 export default function AdminDashboard() {
   const [pendingTherapists, setPendingTherapists] = useState<Therapist[]>([]);
   const [approvedTherapists, setApprovedTherapists] = useState<Therapist[]>([]);
   const [blockedIPs, setBlockedIPs] = useState<BlockedIP[]>([]);
+  const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingIPs, setIsLoadingIPs] = useState(false);
-  const [activeTab, setActiveTab] = useState<"pending" | "approved" | "blocked">("pending");
+  const [isLoadingFeedbacks, setIsLoadingFeedbacks] = useState(false);
+  const [activeTab, setActiveTab] = useState<"pending" | "approved" | "blocked" | "feedback">("pending");
 
   useEffect(() => {
     fetchTherapists();
     if (activeTab === "blocked") {
       fetchBlockedIPs();
+    } else if (activeTab === "feedback") {
+      fetchFeedbacks();
     }
   }, [activeTab]);
 
@@ -87,6 +98,21 @@ export default function AdminDashboard() {
       alert("Failed to fetch blocked IPs");
     } finally {
       setIsLoadingIPs(false);
+    }
+  };
+
+  const fetchFeedbacks = async () => {
+    setIsLoadingFeedbacks(true);
+    try {
+      const data = await api.getFeedbacks();
+      if (data.success) {
+        setFeedbacks(data.feedbacks || []);
+      }
+    } catch (error) {
+      console.error("Error fetching feedbacks:", error);
+      alert("Failed to fetch feedbacks");
+    } finally {
+      setIsLoadingFeedbacks(false);
     }
   };
 
@@ -176,9 +202,55 @@ export default function AdminDashboard() {
             <Ban className={styles.tabIcon} />
             Blocked IPs ({blockedIPs.length})
           </button>
+          <button
+            className={`${styles.tab} ${activeTab === "feedback" ? styles.active : ""}`}
+            onClick={() => setActiveTab("feedback")}
+          >
+            <MessageSquare className={styles.tabIcon} />
+            Feedback ({feedbacks.length})
+          </button>
         </div>
 
-        {activeTab === "blocked" ? (
+        {activeTab === "feedback" ? (
+          isLoadingFeedbacks ? (
+            <div className={styles.loading}>Loading feedbacks...</div>
+          ) : feedbacks.length === 0 ? (
+            <div className={styles.emptyState}>
+              <MessageSquare className={styles.emptyIcon} />
+              <p>No feedbacks found.</p>
+            </div>
+          ) : (
+            <div className={styles.feedbacksGrid}>
+              {feedbacks.map((feedback) => (
+                <Card key={feedback.id} className={styles.feedbackCard}>
+                  <CardHeader>
+                    <CardTitle className={styles.cardTitle}>
+                      <MessageSquare className={styles.icon} />
+                      Feedback #{feedback.id.slice(-6)}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className={styles.info}>
+                      <div className={styles.feedbackText}>
+                        {feedback.feedback}
+                      </div>
+                      <div className={styles.infoItem}>
+                        <span className={styles.label}>Submitted:</span>
+                        <span>{new Date(feedback.created_at).toLocaleString()}</span>
+                      </div>
+                      {feedback.ip_address && (
+                        <div className={styles.infoItem}>
+                          <span className={styles.label}>IP Address:</span>
+                          <span>{feedback.ip_address}</span>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )
+        ) : activeTab === "blocked" ? (
           isLoadingIPs ? (
             <div className={styles.loading}>Loading blocked IPs...</div>
           ) : blockedIPs.length === 0 ? (

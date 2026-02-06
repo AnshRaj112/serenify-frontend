@@ -3,10 +3,11 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { Button } from "../components/ui/button";
-import { Send, MessageSquare, X, LogIn, UserPlus, LogOut, Heart } from "lucide-react";
+import { Send, MessageSquare, X, LogIn, UserPlus, LogOut, Heart, Star, CheckCircle } from "lucide-react";
 import Image from "next/image";
 import salviorisLogo from "../../assets/salvioris.jpg";
 import { api, ApiError, Vent, CreateVentResponse } from "../lib/api";
+import { Textarea } from "../components/ui/textarea";
 import styles from "./Vent.module.scss";
 
 interface User {
@@ -30,12 +31,19 @@ export default function VentPage() {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [skip, setSkip] = useState(0);
   const [showEncouragementModal, setShowEncouragementModal] = useState(false);
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [feedback, setFeedback] = useState("");
+  const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false);
+  const [feedbackError, setFeedbackError] = useState<string | null>(null);
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const loadingMoreRef = useRef<HTMLDivElement>(null);
   const messagesAreaRef = useRef<HTMLDivElement>(null);
   const recentMessageTimesRef = useRef<number[]>([]);
   const encouragementShownRef = useRef<boolean>(false);
+  const feedbackShownRef = useRef<boolean>(false);
+  const messageCountRef = useRef<number>(0);
 
   // Calculate how many messages fit on screen (estimate: ~100px per message)
   const calculateInitialChunkSize = () => {
@@ -48,6 +56,19 @@ export default function VentPage() {
     const estimatedMessages = Math.ceil(availableHeight / estimatedMessageHeight);
     return Math.max(10, Math.min(estimatedMessages, 30)); // Between 10 and 30 messages
   };
+
+  // Prevent body scroll when feedback modal is open (but allow closing)
+  useEffect(() => {
+    if (showFeedbackModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [showFeedbackModal]);
 
   // Check if user is logged in
   useEffect(() => {
@@ -243,6 +264,22 @@ export default function VentPage() {
     }
   };
 
+  const checkAndShowFeedback = () => {
+    // Don't show if already shown once
+    if (feedbackShownRef.current) {
+      return;
+    }
+
+    // Increment message count
+    messageCountRef.current += 1;
+
+    // Show feedback modal after 10 messages
+    if (messageCountRef.current >= 10 && !feedbackShownRef.current) {
+      feedbackShownRef.current = true;
+      setShowFeedbackModal(true);
+    }
+  };
+
   const handleSend = async () => {
     if (!message.trim()) return;
 
@@ -258,6 +295,9 @@ export default function VentPage() {
 
     // Check if we should show encouragement
     checkAndShowEncouragement(messageText);
+
+    // Check if we should show feedback request (after 10 messages)
+    checkAndShowFeedback();
 
     try {
       const response = await api.createVent({
@@ -322,6 +362,9 @@ export default function VentPage() {
 
     // Check if we should show encouragement
     checkAndShowEncouragement(messageText);
+
+    // Check if we should show feedback request
+    checkAndShowFeedback();
 
     try {
       // Send to backend for moderation check (even as guest)
@@ -400,6 +443,40 @@ export default function VentPage() {
     setVents([]);
     // Optionally redirect to home or stay on page
     // router.push("/");
+  };
+
+  const handleFeedbackSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Feedback is optional - if empty, just close the modal
+    if (!feedback.trim()) {
+      setShowFeedbackModal(false);
+      return;
+    }
+
+    setIsSubmittingFeedback(true);
+    setFeedbackError(null);
+
+    try {
+      const response = await api.submitFeedback({
+        feedback: feedback.trim(),
+      });
+
+      if (response.success) {
+        setFeedbackSubmitted(true);
+        setFeedback("");
+        // Close modal after 3 seconds
+        setTimeout(() => {
+          setShowFeedbackModal(false);
+          setFeedbackSubmitted(false);
+        }, 3000);
+      }
+    } catch (err) {
+      const apiError = err as ApiError;
+      setFeedbackError(apiError.message || "Failed to submit feedback. Please try again.");
+    } finally {
+      setIsSubmittingFeedback(false);
+    }
   };
 
   return (
@@ -508,15 +585,26 @@ export default function VentPage() {
               rows={3}
               disabled={isBlocked}
             />
+            <div className={styles.inputActions}>
             <Button
-              onClick={isLoggedIn ? handleSend : handleSendAsGuest}
-              disabled={!message.trim() || isSending || isBlocked}
-              variant="healing"
-              className={styles.sendButton}
-            >
-              <Send className={styles.sendIcon} />
-              Send
-            </Button>
+                onClick={() => setShowFeedbackModal(true)}
+                variant="default"
+                className={styles.feedbackButton}
+                title="Leave Feedback"
+              >
+                <Star className={styles.feedbackIcon} />
+                <span className={styles.feedbackButtonText}>Leave Feedback</span>
+              </Button>
+              <Button
+                onClick={isLoggedIn ? handleSend : handleSendAsGuest}
+                disabled={!message.trim() || isSending || isBlocked}
+                variant="healing"
+                className={styles.sendButton}
+              >
+                <Send className={styles.sendIcon} />
+                Send
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -659,6 +747,96 @@ export default function VentPage() {
               >
                 Continue Venting
               </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Feedback Modal */}
+      {showFeedbackModal && (
+        <div 
+          className={styles.modal} 
+          onClick={(e) => {
+            // Allow closing by clicking outside
+            if (!isSubmittingFeedback) {
+              setShowFeedbackModal(false);
+            }
+          }}
+        >
+          <div 
+            className={`${styles.modalContent} ${styles.feedbackModalContent}`} 
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className={styles.modalHeader}>
+              <div className={styles.feedbackHeaderContent}>
+                <Star className={styles.feedbackHeaderIcon} />
+                <h3>We&apos;d Love Your Feedback!</h3>
+              </div>
+              <button
+                className={styles.closeButton}
+                onClick={() => setShowFeedbackModal(false)}
+                aria-label="Close"
+                disabled={isSubmittingFeedback}
+              >
+                <X className={styles.closeIcon} />
+              </button>
+            </div>
+            <div className={styles.modalBody}>
+              {feedbackSubmitted ? (
+                <div className={styles.feedbackSuccess}>
+                  <CheckCircle className={styles.successIcon} />
+                  <p className={styles.successMessage}>Thank you for your feedback!</p>
+                </div>
+              ) : (
+                <form onSubmit={handleFeedbackSubmit} className={styles.feedbackForm}>
+                  <p className={styles.feedbackSubtitle}>
+                    We know you&apos;re going through a lot right now, and we&apos;re here for you. 
+                    If you can spare just a minute, we&apos;d love to know where we can improve so you can feel much better. 
+                    Your voice matters, and with your help, we can make Salvioris a more supportive space for everyone.
+                  </p>
+                  
+                  {feedbackError && (
+                    <div className={styles.errorMessage}>
+                      {feedbackError}
+                    </div>
+                  )}
+
+                  <div className={styles.formGroup}>
+                    <label htmlFor="feedback" className={styles.label}>
+                      Your Feedback
+                    </label>
+                    <Textarea
+                      id="feedback"
+                      value={feedback}
+                      onChange={(e) => {
+                        setFeedback(e.target.value);
+                        setFeedbackError(null);
+                      }}
+                      placeholder="Tell us what you think... What can we improve? What features would you like to see?"
+                      rows={6}
+                      className={styles.feedbackTextarea}
+                    />
+                    <p className={styles.helperText}>
+                      Optional. Be as detailed as you'd like!
+                    </p>
+                  </div>
+
+                  <div className={styles.feedbackActions}>
+                    <Button
+                      type="submit"
+                      variant="default"
+                      disabled={isSubmittingFeedback}
+                      className={styles.leaveFeedbackButton}
+                    >
+                      {isSubmittingFeedback ? "Submitting..." : "Leave Feedback"}
+                    </Button>
+                  </div>
+
+                  <p className={styles.privacyNote}>
+                    <strong>Note:</strong> Your feedback is anonymous and will only be used to improve our services.
+                  </p>
+                </form>
+              )}
             </div>
           </div>
         </div>

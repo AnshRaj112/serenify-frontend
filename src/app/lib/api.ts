@@ -399,5 +399,31 @@ export const api = {
     }
     return data as GetVentsResponse;
   },
+
+  // Feedback routes
+  submitFeedback: async (data: { feedback: string }) => {
+    const response = await fetch(`${API_BASE_URL}/api/feedback`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    
+    const responseData = await response.json();
+    if (!response.ok) {
+      throw { message: responseData.message || `HTTP error! status: ${response.status}`, status: response.status } as ApiError;
+    }
+    return responseData;
+  },
+
+  getFeedbacks: async () => {
+    const response = await fetch(`${API_BASE_URL}/api/admin/feedbacks`);
+    const data = await response.json();
+    if (!response.ok) {
+      throw { message: data.message || `HTTP error! status: ${response.status}`, status: response.status } as ApiError;
+    }
+    return data;
+  },
 };
 

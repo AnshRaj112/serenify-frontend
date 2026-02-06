@@ -1,0 +1,189 @@
+.feedbackPage {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #1d2935 0%, #283848 100%);
+  padding: 2rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (min-width: 640px) {
+    padding: 3rem 1rem;
+  }
+}
+
+.container {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: hsl(var(--muted-foreground));
+  text-decoration: none;
+  margin-bottom: 2rem;
+  transition: color 0.2s ease;
+  font-size: 0.9375rem;
+
+  &:hover {
+    color: hsl(var(--foreground));
+  }
+}
+
+.backIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.feedbackCard {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.headerIcon {
+  width: 2rem;
+  height: 2rem;
+  color: hsl(var(--primary));
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  margin: 0;
+
+  @media (min-width: 640px) {
+    font-size: 2rem;
+  }
+}
+
+.subtitle {
+  color: hsl(var(--muted-foreground));
+  line-height: 1.6;
+  margin-top: 0.75rem;
+  font-size: 0.9375rem;
+
+  @media (min-width: 640px) {
+    font-size: 1rem;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.errorMessage {
+  background: hsl(var(--destructive) / 0.1);
+  border: 1px solid hsl(var(--destructive) / 0.3);
+  color: hsl(var(--destructive));
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  font-size: 0.9375rem;
+}
+
+.required {
+  color: hsl(var(--destructive));
+}
+
+.textarea {
+  min-height: 200px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.helperText {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submitButton {
+  min-width: 180px;
+  font-weight: 600;
+}
+
+.privacyNote {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.875rem;
+  line-height: 1.6;
+  text-align: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid hsl(var(--border) / 0.5);
+}
+
+// Success state
+.successCard {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.successContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 3rem 2rem;
+  gap: 1.5rem;
+}
+
+.successIcon {
+  width: 4rem;
+  height: 4rem;
+  color: hsl(var(--primary));
+}
+
+.successTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  margin: 0;
+
+  @media (min-width: 640px) {
+    font-size: 2rem;
+  }
+}
+
+.successMessage {
+  color: hsl(var(--muted-foreground));
+  line-height: 1.6;
+  font-size: 1rem;
+  max-width: 500px;
+}
+
+.backButton {
+  margin-top: 1rem;
+}
+
