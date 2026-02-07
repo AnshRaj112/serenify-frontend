@@ -756,7 +756,7 @@ export default function VentPage() {
       {showFeedbackModal && (
         <div 
           className={styles.modal} 
-          onClick={(e) => {
+          onClick={() => {
             // Allow closing by clicking outside
             if (!isSubmittingFeedback) {
               setShowFeedbackModal(false);
@@ -817,7 +817,7 @@ export default function VentPage() {
                       className={styles.feedbackTextarea}
                     />
                     <p className={styles.helperText}>
-                      Optional. Be as detailed as you'd like!
+                      Optional. Be as detailed as you&apos;d like!
                     </p>
                   </div>
 
