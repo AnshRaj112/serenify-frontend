@@ -122,7 +122,7 @@ export default function FeedbackPage() {
                   required
                 />
                 <p className={styles.helperText}>
-                  Minimum 10 characters. Be as detailed as you'd like - we read every feedback!
+                  Minimum 10 characters. Be as detailed as you&apos;d like - we read every feedback!
                 </p>
               </div>
 
@@ -139,7 +139,7 @@ export default function FeedbackPage() {
               </div>
 
               <p className={styles.privacyNote}>
-                <strong>Note:</strong> We don't collect personal information in this form. 
+                <strong>Note:</strong> We don&apos;t collect personal information in this form. 
                 Your feedback is anonymous and will only be used to improve our services.
               </p>
             </form>
